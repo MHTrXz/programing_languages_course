@@ -1,0 +1,7 @@
+*.aux
+*.lof
+*.log
+*.lol
+*.out
+*.synctex.gz
+*.toc

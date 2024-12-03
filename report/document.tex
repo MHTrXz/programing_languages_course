@@ -1,0 +1,359 @@
+\documentclass[11pt, a4paper, oneside]{book}
+
+% URLs and hyperlinks ---------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+}
+\usepackage[inline]{enumitem}
+\usepackage{xurl}
+
+\usepackage{caption}
+%---------------------------------------------------
+
+% page headers -------------------------------------------------
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{fancy}
+\fancyhf{}% Clear header/footer
+\fancyhead[L]{\nouppercase\leftmark}
+\fancyhead[R]{\thepage}
+%---------------------------------------------------------------
+
+% adjust a verrrrry big table -------------------------------
+\usepackage{adjustbox}
+% -----------------------------------------------------------
+
+% titlepage -------------------------------------------------
+\usepackage{pdfpages}
+%------------------------------------------------------------
+
+
+% Rn custom item in enumeration -----------------------------
+\newcounter{itemadded}
+\setcounter{itemadded}{0}
+
+
+\newcommand{\addeditem}{%
+	\addtocounter{enumi}{-1}%
+	\stepcounter{itemadded}
+	\let\LaTeXStandardLabelEnumi\labelenumi%
+	\addtocounter{enumi}{1}
+	\renewcommand{\labelenumi}{\arabic{enumi}\lr{R}.}%
+	\item 
+	% Switch back to old labelling 
+	\let\labelenumi\LaTeXStandardLabelEnumi%
+}%
+
+
+\let\LaTeXStandardEnumerateBegin\enumerate
+\let\LaTeXStandardEnumerateEnd\endenumerate
+
+\renewenvironment{enumerate}{%
+	\LaTeXStandardEnumerateBegin%
+	\setcounter{itemadded}{0}
+}{%
+	\LaTeXStandardEnumerateEnd%
+}%
+% -----------------------------------------------------------
+
+% tables -------------------------------------------------------
+\usepackage{float}
+\usepackage{multirow}
+\renewcommand{\arraystretch}{1.23}
+% ---------------------------------------------------------------------
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=Java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{xepersian}
+\settextfont{Yas}
+\setdigitfont{Yas}
+\setlatintextfont{Yas}
+
+\renewcommand{\lstlistlistingname}{فهرست کد‌ها}
+\renewcommand{\bibname}{مقالات مرتبط}
+
+\begin{document}
+	\begin{titlepage}
+		\centering
+		\includegraphics[width=3.2cm, height=3.2cm]{images/logo}\par
+		\vspace{5mm}
+		{\LARGE دانشگاه اصفهان}\par
+		\vspace{5mm}
+		{\Large دانشکده مهندسی کامپیوتر}\par
+		
+		\vspace{2cm}
+		
+		{\Large گزارش پروژه}\par
+		
+		\vspace{1cm}
+		
+		{\Large درس زبان‌های برنامه نویسی}\par
+		
+		\vspace{1cm}
+		{\Huge بررسی زبان \lr{R}}\par
+		
+		
+		\vspace{2cm}
+		{\Large سیدمحمدحسین هاشمی نصرآبادی}\par
+		{\Large بردیا جوادی}\par
+		\vspace{1cm}
+		{\large استاد : دکتر آرش شفیعی}\par
+
+		\vspace{2cm}
+		
+		% Bottom of the page
+		{\large پاییز 1403\par}
+	\end{titlepage}
+	
+	\clearpage
+	\begin{center}
+		\includegraphics[width=10cm]{images/image002}
+	\end{center}  
+	\thispagestyle{plain}\mbox{} 
+	\clearpage
+	
+	\tableofcontents
+	\listoffigures
+	\lstlistoflistings
+	\newpage
+	
+	\chapter{مقدمه}
+	
+		\section{تاریخچه زبان \lr{R}}
+			
+			زبان برنامه‌نویسی \lr{R} در ابتدا با هدف ساده‌سازی تحلیل‌های آماری و مدل‌سازی داده‌ها طراحی شد. این زبان که توسط راس ایهاکا و رابرت جنتلمن در دهه 1990 ابداع شد، به عنوان یک ابزار متن‌باز برای تحلیل داده‌های پیچیده توسعه یافت. در آن زمان، نیاز به زبانی که توانایی تحلیل آماری پیشرفته، مدل‌سازی ریاضی و تولید گراف‌های بصری را داشته باشد، به شدت احساس می‌شد. زبان \lr{R} با الهام از زبان \lr{S} طراحی شد و توانست مشکلاتی نظیر عدم انعطاف‌پذیری ابزارهای آماری موجود و محدودیت‌های گرافیکی آنها را برطرف کند. همچنین، متن‌باز بودن \lr{R} موجب شد که جامعه‌ای پویا از کاربران و توسعه‌دهندگان حول آن شکل بگیرد، که این امر به گسترش سریع امکانات و کتابخانه‌های آن کمک کرد.
+		
+		
+		\section{ویژگی‌های زبان \lr{R}}
+		
+			\lr{R} به دلیل قابلیت‌های منحصربه‌فرد خود در حوزه‌های مختلف کاربرد گسترده‌ای دارد. از جمله مهم‌ترین حوزه‌ها می‌توان به موارد زیر اشاره کرد:
+			
+			\begin{itemize}
+				
+				\item {\large تحلیل داده‌ها و آمار پیشرفته}: 
+				{\normalsize \lr{R} به‌طور خاص برای تحلیل‌های آماری پیچیده و مدل‌سازی داده‌ها طراحی شده است.}
+				
+				\item {\large یادگیری ماشین و هوش مصنوعی}:
+				{\normalsize بسیاری از الگوریتم‌های یادگیری ماشین و ابزارهای هوش مصنوعی در \lr{R} پیاده‌سازی شده‌اند.}
+				
+				\item {\large مصورسازی داده‌ها}:
+				{\normalsize قابلیت‌های گرافیکی پیشرفته \lr{R} آن را به ابزاری مناسب برای ایجاد نمودارهای حرفه‌ای و گزارش‌های بصری تبدیل کرده است.}
+				
+				\item {\large زیست‌شناسی محاسباتی}:
+				{\normalsize \lr{R} در تحلیل داده‌های زیستی، از جمله داده‌های ژنومی و پروتئومی، کاربرد فراوان دارد.}
+				
+				\item {\large مهندسی مالی و اقتصاد}:
+				{\normalsize بسیاری از مدل‌های مالی و پیش‌بینی‌های اقتصادی با استفاده از \lr{R} پیاده‌سازی می‌شوند.}
+				
+				\item {\large تحقیقات علمی و دانشگاهی}:
+				{\normalsize \lr{R} به‌عنوان یک ابزار تحقیقاتی در علوم اجتماعی، روانشناسی و بسیاری از رشته‌های علمی مورد استفاده قرار می‌گیرد.
+					علاوه بر این، \lr{R} به دلیل پشتیبانی گسترده از کتابخانه‌های تخصصی، امکان تحلیل‌های پیشرفته در حوزه‌های خاص را فراهم می‌کند.}
+				
+			\end{itemize}
+		
+		
+		\section{ابزارهای مرتبط با \lr{R}}
+			
+			
+			زبان \lr{R} اغلب با زبان \lr{Python} مقایسه می‌شود، زیرا هر دو زبان ابزارهای اصلی تحلیل داده و یادگیری ماشین به شمار می‌روند. تفاوت‌های کلیدی \lr{R} با زبان‌های مشابه عبارت‌اند از:
+			
+			\begin{itemize}
+				
+				\item {\large تمرکز بر تحلیل آماری}:
+				{\normalsize \lr{R} ابزارهایی پیشرفته برای تحلیل‌های آماری و آزمون‌های فرضیه ارائه می‌دهد، در حالی که \lr{Python} در این زمینه به کتابخانه‌های شخص ثالث متکی است.}
+				
+				\item {\large مصورسازی داده‌ها}:
+				{\normalsize ابزارهایی مانند \lr{ggplot2} و \lr{lattice} در \lr{R} قابلیت‌های بصری‌سازی حرفه‌ای و پیچیده‌تری نسبت به کتابخانه‌های \lr{Python} مانند \lr{Matplotlib} و \lr{Seaborn} دارند.}
+				
+				\item {\large یادگیری و استفاده}:
+				{\normalsize یادگیری \lr{R} برای کسانی که با مفاهیم آماری آشنا هستند، سریع‌تر است، در حالی که \lr{Python} به دلیل نحوه نگارش و انعطاف‌پذیری خود، مناسب‌تر برای پروژه‌های عمومی‌تر است.}
+				
+				\item {\large جامعه کاربری}:
+				{\normalsize جامعه کاربری \lr{R} بیشتر شامل متخصصان آمار و دانشمندان داده است، در حالی که \lr{Python} توسط طیف وسیع‌تری از توسعه‌دهندگان نرم‌افزار و محققان استفاده می‌شود.
+					با وجود این تفاوت‌ها، \lr{R} و \lr{Python} اغلب به صورت مکمل استفاده می‌شوند و ترکیب این دو زبان در پروژه‌های داده‌محور بسیار رایج است.}
+				
+			\end{itemize}
+			
+	
+	
+	\chapter{نحو و معنا شناسی}
+	
+		\section{نحو و معناشناسی}
+		
+			کلمات کلیدی زبان \lr{R} شامل موارد زیر است و نمی‌توان از آن‌ها به عنوان نام متغیر یا تابع استفاده کرد:
+			\lr{if}، \lr{else}، \lr{repeat}، \lr{while}، \lr{function}، \lr{for}، \lr{in}، \lr{next}، \lr{break}، \lr{TRUE}، \lr{FALSE}، \lr{NULL}، \lr{NA}، \lr{Inf}، \lr{NaN}، \lr{NA\_integer\_}، \lr{NA\_real\_}، \lr{NA\_complex\_} و \lr{NA\_character\_}
+			
+			توضیح کلمات کلیدی:
+			
+			\subsection{\lr{if} - اجرای کد بر اساس شرط مشخص}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{if}}]
+if (x > 0) {
+	print("is positive")
+}
+					\end{lstlisting}
+				\end{latin}
+			
+			\subsection{\lr{else} - بلوک جایگزین در صورت عدم تحقق شرط}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{else}}]
+if (x > 0) {
+	print("is positive")
+} else {
+	print("is negative or zero")
+}
+					\end{lstlisting}
+				\end{latin}
+				
+			\subsection{\lr{repeat} - اجرای حلقه بی‌نهایت تا زمان استفاده از \lr{break}}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{repeat}}]
+i <- 1
+repeat {
+	print(i)
+	if (i == 5) break
+	i <- i + 1
+}
+					\end{lstlisting}
+				\end{latin}
+				
+				
+			\subsection{\lr{while} - اجرای حلقه تا زمانی که شرط برقرار باشد}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{while}}]
+i <- 1
+while (i <= 5) {
+	print(i)
+	i <- i + 1
+}
+					\end{lstlisting}
+				\end{latin}
+				
+			\subsection{\lr{function} - تعریف توابع جدید}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{function}}]
+my_function <- function(a, b) {
+	return(a + b)
+}
+print(my_function(3, 4))
+					\end{lstlisting}
+				\end{latin}
+				
+				
+			\subsection{\lr{for} - اجرای حلقه روی مجموعه‌ای از مقادیر}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{for}}]
+for (i in 1:5) {
+	print(i)
+}
+					\end{lstlisting}
+				\end{latin}
+				
+							
+			\subsection{\lr{in} - تعیین عضویت یا استفاده در حلقه}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{in}}]
+x <- 5
+print(x %in% c(3, 5, 7)) # output: TRUE
+					\end{lstlisting}
+				\end{latin}				
+				
+			\subsection{\lr{next} - عبور از مرحله جاری و رفتن به مرحله بعدی حلقه}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{next}}]
+for (i in 1:5) {
+	if (i == 3) next
+	print(i)
+}
+					\end{lstlisting}
+				\end{latin}	
+				
+			\subsection{\lr{break} - خروج از حلقه}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{break}}]
+for (i in 1:5) {
+	if (i == 3) break
+	print(i)
+}
+					\end{lstlisting}
+				\end{latin}	
+	
+			\subsection{\lr{TRUE}و \lr{FALSE} - مقادیر منطقی \lr{(Boolean)} در \lr{R}}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{TRUE, FALSE}}]
+x <- TRUE
+y <- FALSE
+print(x & y) # output: FALSE
+					\end{lstlisting}
+				\end{latin}
+				
+			\subsection{\lr{NULL} - نشان‌دهنده مقدار خالی یا بدون مقدار}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{NULL}}]
+x <- NULL
+print(is.null(x)) # output: TRUE
+					\end{lstlisting}
+				\end{latin}
+			
+			\subsection{\lr{NA} - مقدار غیرموجود یا ناشناخته \lr{(Not Available)}}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{NA}}]
+x <- c(1, NA, 3)
+print(is.na(x)) # output: FALSE TRUE FALSE
+					\end{lstlisting}
+				\end{latin}
+				
+			\subsection{\lr{Inf} و \lr{-Inf} - مقدار بی‌نهایت مثبت و منفی}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{Inf, -Inf}}]
+print(1 / 0) # output: Inf
+print(-1 / 0) # output: -Inf
+					\end{lstlisting}
+				\end{latin}
+				
+			\subsection{\lr{NaN} - عدد غیرقابل تعریف \lr{(Not a Number)}}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{NaN}}]
+print(0 / 0) # output: NaN
+					\end{lstlisting}
+				\end{latin}
+				
+			\subsection{\lr{NA\_integer\_}، \lr{NA\_real\_}، \lr{NA\_complex\_} و \lr{NA\_character\_} - انواع خاص \lr{NA} برای داده‌های مختلف}
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{NA\_integer\_, NA\_real\_, NA\_complex\_, NA\_character\_}}]
+x <- NA_integer_
+print(typeof(x)) # output: integer
+					\end{lstlisting}
+				\end{latin}
+	\chapter{متغیرها و نوع های داده ای}
+
+			
+
+
+\end{document}
