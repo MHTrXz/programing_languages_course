@@ -67,6 +67,7 @@
 % ---------------------------------------------------------------------
 
 \usepackage{listings}
+\usepackage{forest}
 \usepackage{color}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -74,7 +75,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
-	language=Java,
+	language=R,
 	aboveskip=3mm,
 	belowskip=3mm,
 	showstringspaces=false,
@@ -96,7 +97,8 @@
 \setlatintextfont{Yas}
 
 \renewcommand{\lstlistlistingname}{فهرست کد‌ها}
-\renewcommand{\bibname}{مقالات مرتبط}
+\renewcommand{\bibname}{منابع}
+
 
 \begin{document}
 	\begin{titlepage}
@@ -139,6 +141,7 @@
 	\clearpage
 	
 	\tableofcontents
+	\listoftables 
 	\listoffigures
 	\lstlistoflistings
 	\newpage
@@ -147,7 +150,7 @@
 	
 		\section{تاریخچه زبان \lr{R}}
 			
-			زبان برنامه‌نویسی \lr{R} در ابتدا با هدف ساده‌سازی تحلیل‌های آماری و مدل‌سازی داده‌ها طراحی شد. این زبان که توسط راس ایهاکا و رابرت جنتلمن در دهه 1990 ابداع شد، به عنوان یک ابزار متن‌باز برای تحلیل داده‌های پیچیده توسعه یافت. در آن زمان، نیاز به زبانی که توانایی تحلیل آماری پیشرفته، مدل‌سازی ریاضی و تولید گراف‌های بصری را داشته باشد، به شدت احساس می‌شد. زبان \lr{R} با الهام از زبان \lr{S} طراحی شد و توانست مشکلاتی نظیر عدم انعطاف‌پذیری ابزارهای آماری موجود و محدودیت‌های گرافیکی آنها را برطرف کند. همچنین، متن‌باز بودن \lr{R} موجب شد که جامعه‌ای پویا از کاربران و توسعه‌دهندگان حول آن شکل بگیرد، که این امر به گسترش سریع امکانات و کتابخانه‌های آن کمک کرد.
+			زبان برنامه‌نویسی \lr{R} در ابتدا با هدف ساده‌سازی تحلیل‌های آماری و مدل‌سازی داده‌ها طراحی شد. این زبان که توسط راس ایهاکا و رابرت جنتلمن در دهه 1990 ابداع شد، به عنوان یک ابزار متن‌باز برای تحلیل داده‌های پیچیده توسعه یافت. در آن زمان، نیاز به زبانی که توانایی تحلیل آماری پیشرفته، مدل‌سازی ریاضی و تولید گراف‌های بصری را داشته باشد، به شدت احساس می‌شد. زبان \lr{R} با الهام از زبان \lr{SAS} طراحی شد و توانست مشکلاتی نظیر عدم انعطاف‌پذیری ابزارهای آماری موجود و محدودیت‌های گرافیکی آنها را برطرف کند. همچنین، متن‌باز بودن \lr{R} موجب شد که جامعه‌ای پویا از کاربران و توسعه‌دهندگان حول آن شکل بگیرد، که این امر به گسترش سریع امکانات و کتابخانه‌های آن کمک کرد.
 		
 		
 		\section{ویژگی‌های زبان \lr{R}}
@@ -157,49 +160,309 @@
 			\begin{itemize}
 				
 				\item {\large تحلیل داده‌ها و آمار پیشرفته}: 
-				{\normalsize \lr{R} به‌طور خاص برای تحلیل‌های آماری پیچیده و مدل‌سازی داده‌ها طراحی شده است.}
+				{\normalsize به‌طور خاص برای تحلیل‌های آماری پیچیده و مدل‌سازی داده‌ها طراحی شده است.}
 				
 				\item {\large یادگیری ماشین و هوش مصنوعی}:
-				{\normalsize بسیاری از الگوریتم‌های یادگیری ماشین و ابزارهای هوش مصنوعی در \lr{R} پیاده‌سازی شده‌اند.}
+				{\normalsize بسیاری از الگوریتم‌های یادگیری ماشین و ابزارهای هوش مصنوعی در پیاده‌سازی شده‌اند.}
 				
 				\item {\large مصورسازی داده‌ها}:
-				{\normalsize قابلیت‌های گرافیکی پیشرفته \lr{R} آن را به ابزاری مناسب برای ایجاد نمودارهای حرفه‌ای و گزارش‌های بصری تبدیل کرده است.}
+				{\normalsize قابلیت‌های گرافیکی پیشرفته آن را به ابزاری مناسب برای ایجاد نمودارهای حرفه‌ای و گزارش‌های بصری تبدیل کرده است.}
 				
-				\item {\large زیست‌شناسی محاسباتی}:
-				{\normalsize \lr{R} در تحلیل داده‌های زیستی، از جمله داده‌های ژنومی و پروتئومی، کاربرد فراوان دارد.}
+				\item {\large بیوانفورماتیک}:
+				{\normalsize در تحلیل داده‌های زیستی، از جمله داده‌های ژنومی و پروتئومی، کاربرد فراوان دارد.}
 				
-				\item {\large مهندسی مالی و اقتصاد}:
+				\item {\large امور مالی و اقتصادی}:
 				{\normalsize بسیاری از مدل‌های مالی و پیش‌بینی‌های اقتصادی با استفاده از \lr{R} پیاده‌سازی می‌شوند.}
 				
-				\item {\large تحقیقات علمی و دانشگاهی}:
-				{\normalsize \lr{R} به‌عنوان یک ابزار تحقیقاتی در علوم اجتماعی، روانشناسی و بسیاری از رشته‌های علمی مورد استفاده قرار می‌گیرد.
+				\item {\large تحقیقات علمی}:
+				{\normalsize به‌عنوان یک ابزار تحقیقاتی در علوم اجتماعی، روانشناسی و بسیاری از رشته‌های علمی مورد استفاده قرار می‌گیرد.
 					علاوه بر این، \lr{R} به دلیل پشتیبانی گسترده از کتابخانه‌های تخصصی، امکان تحلیل‌های پیشرفته در حوزه‌های خاص را فراهم می‌کند.}
+					
+				\item {\large بازاریابی و تحلیل مشتری}:
+				{\normalsize کسب‌وکارها از برای تحلیل رفتار مشتری، تقسیم‌بندی بازار و پیش‌بینی فروش استفاده می‌کنند.
+				}
 				
 			\end{itemize}
-		
-		
-		\section{ابزارهای مرتبط با \lr{R}}
 			
 			
-			زبان \lr{R} اغلب با زبان \lr{Python} مقایسه می‌شود، زیرا هر دو زبان ابزارهای اصلی تحلیل داده و یادگیری ماشین به شمار می‌روند. تفاوت‌های کلیدی \lr{R} با زبان‌های مشابه عبارت‌اند از:
+		\section{هدف از ایجاد زبان و مشکلاتی که رفع کرد}
+		
+		 	\lr{R} برای حل مشکلات خاصی طراحی شد که در آن زمان در زبان‌های موجود دیده می‌شد:
 			
 			\begin{itemize}
 				
-				\item {\large تمرکز بر تحلیل آماری}:
-				{\normalsize \lr{R} ابزارهایی پیشرفته برای تحلیل‌های آماری و آزمون‌های فرضیه ارائه می‌دهد، در حالی که \lr{Python} در این زمینه به کتابخانه‌های شخص ثالث متکی است.}
+				\item {\large رایگان و منبع‌باز بودن}:
+				{\normalsize در دهه 90، بسیاری از ابزارهای آماری مثل \lr{SAS} و \lr{MATLAB} هزینه‌های بالایی داشتند. \lr{R} به عنوان یک جایگزین رایگان و منبع‌باز برای این ابزارها توسعه یافت.}
 				
-				\item {\large مصورسازی داده‌ها}:
-				{\normalsize ابزارهایی مانند \lr{ggplot2} و \lr{lattice} در \lr{R} قابلیت‌های بصری‌سازی حرفه‌ای و پیچیده‌تری نسبت به کتابخانه‌های \lr{Python} مانند \lr{Matplotlib} و \lr{Seaborn} دارند.}
+				\item {\large سازگاری با زبان \lr{SAS}}:
+				{\normalsize کاربران زبان \lr{SAS} می‌توانستند کدهای خود را با تغییرات جزئی در \lr{R} اجرا کنند. این ویژگی، پذیرش \lr{R} را تسریع کرد.}
 				
-				\item {\large یادگیری و استفاده}:
-				{\normalsize یادگیری \lr{R} برای کسانی که با مفاهیم آماری آشنا هستند، سریع‌تر است، در حالی که \lr{Python} به دلیل نحوه نگارش و انعطاف‌پذیری خود، مناسب‌تر برای پروژه‌های عمومی‌تر است.}
+				\item {\large انعطاف‌پذیری بالا}:
+				{\normalsize \lr{R} به طور خاص برای تحلیل آماری و مصورسازی داده‌ها بهینه‌سازی شده بود و نیازهای تحلیل‌گران را بهتر از زبان‌های عمومی مثل \lr{C} یا \lr{Java} برآورده می‌کرد.
+				}
 				
-				\item {\large جامعه کاربری}:
-				{\normalsize جامعه کاربری \lr{R} بیشتر شامل متخصصان آمار و دانشمندان داده است، در حالی که \lr{Python} توسط طیف وسیع‌تری از توسعه‌دهندگان نرم‌افزار و محققان استفاده می‌شود.
-					با وجود این تفاوت‌ها، \lr{R} و \lr{Python} اغلب به صورت مکمل استفاده می‌شوند و ترکیب این دو زبان در پروژه‌های داده‌محور بسیار رایج است.}
+				\item {\large قابلیت توسعه‌پذیری}:
+				{\normalsize با ایجاد کتابخانه‌ها و بسته‌های متنوع، کاربران می‌توانستند قابلیت‌های \lr{R} را برای نیازهای خاص خود توسعه دهند.}
 				
 			\end{itemize}
 			
+		
+		\section{مشکلاتی که در ابتدای ظهور خود رفع می‌کرد}
+		
+			\begin{itemize}
+				
+				\item {\large عدم دسترسی به ابزارهای پیشرفته تحلیل داده}:
+				{\normalsize با ارائه ابزارهایی قدرتمند، نیاز به نرم‌افزارهای گران‌قیمت را کاهش داد.}
+				
+				\item {\large مصورسازی ضعیف داده‌ها}:
+				{\normalsize در آن زمان، بسیاری از زبان‌های برنامه‌نویسی، ابزارهای گرافیکی مناسبی نداشتند. \lr{R} با کتابخانه‌هایی مثل \lr{ggplot2}، انقلابی در مصورسازی داده‌ها ایجاد کرد.}
+				
+				\item {\large پیچیدگی کدنویسی در زبان‌های عمومی}:
+				{\normalsize تحلیل‌گران داده معمولاً نیاز داشتند تا با زبان‌هایی مثل \lr{Fortran} یا \lr{C} کار کنند که برای تحلیل داده بهینه نبودند. \lr{R} این مشکل را رفع کرد و کار با داده‌ها را ساده‌تر نمود.}
+				
+			\end{itemize}
+			
+		
+		\section{بهبود نسبت به زبان‌های دیگر}
+		
+			\lr{R} بسیاری از قابلیت‌ها و ویژگی‌های موجود در زبان‌های دیگر را ارتقا داد و درون خود تجمیع کرد:
+			
+			\begin{itemize}
+				
+				\item {\large مقایسه با \lr{SAS}}:
+				{\normalsize رایگان و متن‌باز بود، در حالی که \lr{SAS} یک نرم‌افزار تجاری بود.}
+				
+				\item {\large مقایسه با \lr{MATLAB}}:
+				{\normalsize در تحلیل‌های آماری پیچیده کارآمدتر بود و به جامعه کاربری بزرگی در حوزه آمار متکی بود.}
+				
+				\item {\large مقایسه با \lr{Python} (در زمان آغاز)}:
+				{\normalsize \lr{Python} در آن زمان بیشتر برای توسعه اسکریپت کاربرد داشت و قدرت تحلیل داده‌ای آن مثل امروز توسعه نیافته بود.}
+				
+			\end{itemize}
+			
+		
+		\section{ویژگی‌های متمایز زبان}
+			
+			\begin{itemize}
+				
+				\item {\large تمرکز بر آمار}:
+				{\normalsize برخلاف زبان‌های عمومی مثل \lr{Python} یا \lr{C++}، \lr{R} از ابتدا با هدف تحلیل آماری طراحی شده است.}
+				
+				\item {\large کتابخانه‌های تخصصی}:
+				{\normalsize \lr{R} دارای بیش از 18,000 بسته تخصصی در حوزه‌های مختلف مانند ژنتیک، مالی، یادگیری ماشین و غیره است.}
+				
+				\item {\large مصورسازی پیشرفته}:
+				{\normalsize \lr{R} ابزارهای قدرتمندی برای ایجاد نمودارهای پیچیده و تعاملی دارد که در مقایسه با زبان‌های مشابه، برجسته‌تر است.}
+				
+				\item {\large جامعه کاربری بزرگ}:
+				{\normalsize جامعه \lr{R} بسیار فعال است و منابع یادگیری رایگان بسیاری فراهم کرده است.}
+				
+				\item {\large قابلیت‌های تعاملی}:
+				{\normalsize با ابزارهایی مثل \lr{RStudio} و \lr{Shiny}، \lr{R} امکان ایجاد داشبوردها و برنامه‌های وب تعاملی را فراهم می‌کند.}
+				
+			\end{itemize}
+			
+			
+		\section{ارزیابی بر اساس معیارهای مختلف}
+			
+			\begin{itemize}
+				
+				\item {\large خوانایی}:
+				{\normalsize برای کاربران با پس‌زمینه آمار و علوم داده خواناتر است. با این حال، نحو خاص آن ممکن است برای برنامه‌نویسان سنتی دشوار باشد.}
+				
+				\item {\large قابلیت اطمینان}:
+				{\normalsize در تحلیل‌های آماری و شبیه‌سازی‌ها بسیار قابل‌اعتماد است. با این حال، برای پروژه‌های بزرگ و داده‌های حجیم ممکن است نیاز به بهینه‌سازی داشته باشد.}
+				
+				\item {\large هزینه}:
+				{\normalsize رایگان و متن‌باز است، که آن را به انتخابی ایده‌آل برای دانشجویان و شرکت‌های نوپا تبدیل می‌کند.}
+				
+				\item {\large بهره‌وری و کارایی}:
+				{\normalsize برای تحلیل‌های آماری کوچک و متوسط، R بسیار سریع و کارآمد است. اما در مقایسه با زبان‌هایی مثل \lr{Python} برای پروژه‌های چندمنظوره یا داده‌های حجیم ممکن است کارایی کمتری داشته باشد.}
+				
+				\item {\large هزینه یادگیری}:
+				{\normalsize برای کسانی که با آمار آشنایی دارند، آسان‌تر است. اما برای برنامه‌نویسان تازه‌کار، زبان‌هایی مثل \lr{Python} ساده‌تر هستند.}
+				
+				\item {\large قابلیت جابجایی}:
+				{\normalsize بر روی تمامی سیستم‌عامل‌های رایج (ویندوز، مک، لینوکس) بدون مشکل اجرا می‌شود.}
+				
+				\item {\large ابزارهای توسعه}:
+				{\normalsize ابزارهایی مانند \lr{RStudio} و \lr{Jupyter Notebook} پشتیبانی قدرتمندی برای توسعه و تحلیل داده ارائه شده‌اند‌.}
+				
+			\end{itemize}
+			
+		
+		
+		\section{مقایسه با زبان‌های مشابه}
+		
+									
+			\subsection{خوانایی}
+				
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize طراحی شده با تمرکز بر آمار و تحلیل داده. کدهای R ممکن است برای تازه‌کاران کمی دشوار به نظر برسند، اما برای کسانی که در تحلیل آماری تجربه دارند، خوانا و ساده است.}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize خوانایی بالاتر به دلیل سینتکس ساده و عمومی. یادگیری و استفاده از آن برای افراد تازه‌کار آسان‌تر است.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize خوانا و ساده، مخصوصاً برای مهندسان. ساختار نوشتار آن شبیه به ریاضیات است.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize نسبتاً سخت‌تر به دلیل سینتکس خاص و قدیمی.}
+					
+				\end{itemize}
+		
+			\subsection{سادگی}
+			
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize برای تحلیل داده ساده و بهینه است، اما سینتکس آن برای کارهای غیرتحلیلی ممکن است پیچیده باشد.}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize ساده‌تر به دلیل طراحی چندمنظوره و استفاده گسترده در زمینه‌های مختلف.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize ساده اما گران است، زیرا نیاز به لایسنس دارد.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize پیچیده‌تر، به خصوص برای کاربران غیرمتخصص.}
+					
+				\end{itemize}
+				
+				
+			\subsection{کتابخانه‌ها}
+				
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize غنی‌ترین مجموعه کتابخانه‌های آماری و تحلیل داده را دارد (\lr{CRAN}، \lr{Bioconductor}).}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize دارای کتابخانه‌های عمومی قوی مانند \lr{Pandas}، \lr{NumPy}، و \lr{scikit-learn} است. اما برای تحلیل‌های پیشرفته، به \lr{R} نمی‌رسد.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize کتابخانه‌های ریاضی و شبیه‌سازی قوی دارد، اما برای تحلیل آماری گسترده نیست.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize ابزارهای تخصصی برای تحلیل داده دارد، اما کتابخانه‌های خارجی محدودند.}
+					
+				\end{itemize}
+
+				
+			\subsection{کاربرد}
+				
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize تحلیل داده، مدل‌سازی آماری، یادگیری ماشین.}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize همه‌منظوره، از تحلیل داده تا هوش مصنوعی و توسعه وب.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize محاسبات عددی، شبیه‌سازی و پردازش سیگنال.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize تحلیل داده‌های صنعتی و کسب‌وکاری.}
+					
+				\end{itemize}
+				
+				
+				\subsection{کارایی}
+				
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize برای مجموعه داده‌های بزرگ ممکن است کند باشد مگر با استفاده از بسته‌های بهینه‌سازی شده.}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize سریع‌تر با کتابخانه‌هایی مانند \lr{NumPy} و استفاده از \lr{Cython}.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize کارایی بالا برای مسائل ریاضی و شبیه‌سازی.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize کارایی بالا در تحلیل داده‌های سازمانی.}
+					
+				\end{itemize}
+				
+				
+				\subsection{هزینه}
+				
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize رایگان و متن‌باز.}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize رایگان و متن‌باز.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize بسیار گران و نیازمند لایسنس.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize گران‌قیمت و مناسب شرکت‌ها.}
+					
+				\end{itemize}
+				
+				
+				\subsection{قدرت آماری}
+				
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize بالاترین قدرت آماری، با گسترده‌ترین ابزارها و مدل‌ها.}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize قدرت آماری متوسط. کتابخانه‌های آن برای تحلیل داده کافی هستند، اما به گستردگی \lr{R} نیستند.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize قدرت آماری کمتر نسبت به \lr{R} و \lr{Python}.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize قدرت آماری بالا، اما بیشتر در حوزه‌های سازمانی کاربرد دارد.}
+					
+				\end{itemize}
+				
+				
+			\subsection{قابلیت جابجایی}
+				
+				\begin{itemize}
+					
+					\item {\large \lr{R}}:
+					{\normalsize قابل نصب روی تمام سیستم‌عامل‌ها (\lr{Windows}، \lr{macOS} و \lr{Linux}).}
+					
+					\item {\large \lr{Python}}:
+					{\normalsize بسیار قابل جابجایی با پشتیبانی جهانی.}
+					
+					\item {\large \lr{MATLAB}}:
+					{\normalsize نیاز به لایسنس برای هر سیستم‌عامل.}
+					
+					\item {\large \lr{SAS}}:
+					{\normalsize معمولاً به صورت سروری استفاده می‌شود و به راحتی قابل انتقال نیست.}
+					
+				\end{itemize}
+				
+			\subsection{نتیجه‌گیری}
+				
+				\begin{itemize}
+					
+					\item {\large اگر قدرت آماری و تحلیل داده اولویت است}:
+					{\normalsize \lr{R} بهترین گزینه است.}
+					
+					\item {\large اگر نیاز به یک زبان همه‌منظوره با کاربری گسترده دارید}:
+					{\normalsize \lr{Python} انتخاب بهتری است.}
+					
+					\item {\large اگر نیازمند به زبانی برای شبیه‌سازی هستید}:
+					{\normalsize \lr{MATLAB} برتری دارد.}
+					
+					\item {\large اگر تحلیل‌های کسب‌وکاری سازمانی مدنظر است}:
+					{\normalsize \lr{SAS} گزینه مناسبی است.}
+					
+				\end{itemize}
+
 	
 	
 	\chapter{نحو و معنا شناسی}
@@ -351,9 +614,1000 @@ x <- NA_integer_
 print(typeof(x)) # output: integer
 					\end{lstlisting}
 				\end{latin}
-	\chapter{متغیرها و نوع های داده ای}
-
+				
+				
+				
+		\section{گرامر ساده برای بخشی از زبان}
 			
+			گرامر زیر یک زیرمجموعه کوچک از \lr{R} را برای ساختارهای کنترلی و عملیات ریاضی توصیف می‌کند:
+			
+		
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Simple R grammar}}]
+<program>       ::= <statement> | <statement> ";" <program>
+<statement>     ::= <assignment> | <conditional> | <loop> | <expression>
+<assignment>    ::= <identifier> "<-" <expression>
+<conditional>   ::= "if" "(" <expression> ")" "{" <program> "}" [ "else" "{" <program> "}" ]
+<loop>          ::= "for" "(" <identifier> "in" <expression> ")" "{" <program> "}" 
+<expression>    ::= <term> | <term> <operator> <expression>
+<term>          ::= <number> | <identifier> | "(" <expression> ")"
+<operator>      ::= "+" | "-" | "*" | "/"
+<number>        ::= [0-9]+
+<identifier>    ::= [a-zA-Z_][a-zA-Z0-9_]*
 
+				\end{lstlisting}
+			\end{latin}
+				
+				
+			\section{برنامه نمونه در زبان}  \label{Simple_R_program}
+			
+				برنامه زیر یک حلقه برای محاسبه مجموع اعداد 1 تا 10 است:
+				
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{Simple R program}}] 
+sum <- 0
+for (i in 1:10) {
+	sum <- sum + i
+}
+print(sum)
+						
+					\end{lstlisting}
+				\end{latin}
+				
+				
+			\section{درخت تجزیه برای برنامه نمونه}
+				درخت تجزیه برنامه \ref{Simple_R_program} شامل عناصر زیر است:
+				
+				\begin{latin}
+					\begin{forest}
+						[
+							Program
+								[Assignment [sum <- 0]]
+								[For Loop
+									[Identifier [i]]
+									[Range [1:10]]
+									[Body
+										[Assignment [sum <- sum + i]]
+									]
+								]
+								[Print
+									[Identifier [sum]]
+								]
+						]
+					\end{forest}
+				\end{latin}
+
+
+		\section{تقدم و وابستگی عملگرها}
+			
+			در \lr{R}، تقدم عملگرها به صورت پیش‌فرض تعریف شده است. برخی از عملگرهای رایج با ترتیب تقدم:
+			
+			\begin{enumerate}
+				
+				\item {\large داخل پرانتز - ()}:
+				{\normalsize بالاترین تقدم.}
+				
+				\item {\large توابع}:
+				{\normalsize توابع مانند \lr{sin()}, \lr{log()} تقدم بیشتری از عملگرهای ریاضی دارند.}
+				
+				\item {\large عملگر توان}:
+				{\normalsize بیشترین تقدم میان عملگرهای ریاضی.}
+				
+				\item {\large ضرب و تقسیم - (* و /)}:
+				{\normalsize بالاتر از جمع و تفریق.}
+				
+				\item {\large جمع و تفریق - (+ و -)}:
+				{\normalsize پایین‌تر از ضرب و تقسیم.}
+				
+			\end{enumerate}
+			
+			{\Large وابستگی عملگرها:}
+			
+			\begin{itemize}
+				
+				\item بیشتر عملگرها از چپ به راست ارزیابی می‌شوند (مثلاً +, -, *, /).
+				
+				\item عملگر توان از راست به چپ ارزیابی می‌شود.
+				
+			\end{itemize}
+			
+			
+			{\Large مثال:}
+			
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{Precedence of operators}}] 
+x <- 2 + 3 * 4^2
+						
+					\end{lstlisting}
+				\end{latin}
+				
+				توضیح گام به گام:
+				
+				\begin{enumerate}
+					
+					\item 
+					توان: $4^2 = 16$.
+					
+					\item 
+					ضرب: $3 * 16 = 48$.
+					
+					\item
+					جمع: $2 + 48 = 50$.
+					
+				\end{enumerate}
+				
+				
+		\section{توصیف گرامر بر اساس تقدم عملگرها}
+			
+			برای پیروی از تقدم عملگرها در گرامر، می‌توانیم گرامر را اصلاح کنیم:
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Operation grammar}}] 
+<expression> ::= <term> | <term> "+" <expression> | <term> "-" <expression>
+<term>       ::= <factor> | <factor> "*" <term> | <factor> "/" <term>
+<factor>     ::= <number> | "(" <expression> ")" | <factor> "^" <factor>
+
+				\end{lstlisting}
+			\end{latin}
+			
+			این گرامر تقدم توان را بالاتر از ضرب و تقسیم و تقدم ضرب و تقسیم را بالاتر از جمع و تفریق تضمین می‌کند.
+				
+				
+				
+		\section{معناشناسی عملیاتی و توصیف ساختارها}
+		
+			مقایسه برخی از ساختارهای پایه در زبان‌های برنامه نویسی در زبان‌های \lr{R}، \lr{C} و اسمبلی:
+			
+			\subsection{تخصیص (\lr{Assignment})}
+			
+				\begin{itemize}
+					
+					\item کد \lr{R}
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{R Assignment}}] 
+sum <- 0
+							
+						\end{lstlisting}
+					\end{latin}
+					
+					\item معادل در \lr{C}
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{C Assignment}}] 
+int sum = 0;
+
+						\end{lstlisting}
+					\end{latin}
+					
+					\item معادل در اسمبلی (فرض پردازنده \lr{x86})
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Assembly Assignment}}] 
+MOV sum, 0
+
+						\end{lstlisting}
+					\end{latin}
+					
+				\end{itemize}
+				
+				
+			\subsection{حلقه \lr{for}}
+				
+				\begin{itemize}
+					
+					\item کد \lr{R}
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{R for}}] 
+for (i in 1:10) {
+	sum <- sum + i
+}
+							
+						\end{lstlisting}
+					\end{latin}
+					
+					\item معادل در \lr{C}
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{C for}}] 
+for (int i = 1; i <= 10; i++) {
+	sum += i;
+}
+							
+						\end{lstlisting}
+					\end{latin}
+					
+					\item معادل در اسمبلی
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Assembly loop}}] 
+MOV i, 1
+MOV sum, 0
+LOOP_START:
+ADD sum, i
+INC i
+CMP i, 10
+JLE LOOP_START
+							
+						\end{lstlisting}
+					\end{latin}
+					
+				\end{itemize}
+								
+				
+			\subsection{چاپ (\lr{Print})}
+				
+				\begin{itemize}
+					
+					\item کد \lr{R}
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{R Print}}] 
+print(sum)
+
+						\end{lstlisting}
+					\end{latin}
+					
+					\item معادل در \lr{C}
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{C Print}}] 
+printf("%d", sum);
+
+						\end{lstlisting}
+					\end{latin}
+					
+				\end{itemize}
+	
+	\chapter{متغیرها و نوع های داده ای}
+	
+		\section{انقیاد}
+		
+			\subsection{انقیاد نوع و مقدار}
+			
+				\subsubsection{انقیاد نوع (\lr{Type Binding})}
+				
+					نوع‌گذاری پویا (\lr{Dynamic Typing}): در \lr{R}، متغیرها نیازی به تعریف نوع در زمان اعلان ندارند. نوع متغیر در زمان اختصاص مقدار (\lr{assignment}) تعیین می‌شود.
+					این نوع‌گذاری به صورت زمان اجرا (\lr{Runtime}) انجام می‌شود.
+					نوع متغیر می‌تواند در طول برنامه تغییر کند.
+					
+					
+					مثال:
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Type Binding}}] 
+x <- 42       # integer
+x <- "Hello"  # character
+							
+						\end{lstlisting}
+					\end{latin}
+					
+					در این مثال، متغیر \lr{x} ابتدا یک عدد صحیح (\lr{integer}) است، اما بعداً به یک مقدار رشته‌ای (\lr{character}) تغییر می‌یابد. این نشان‌دهنده نوع‌گذاری پویا است.
+					
+				\subsection{انقیاد مقدار (\lr{Value Binding})}
+				
+					مقداردهی متغیرها در زمان تخصیص مقدار به متغیر انجام می‌شود. از عملگر <- یا = برای اختصاص مقدار به متغیر استفاده می‌شود.
+					انقیاد مقدار در \lr{R} در زمان اجرا (\lr{Runtime}) انجام می‌شود، زیرا مقادیر می‌توانند تغییر کنند.
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Value Binding}}] 
+y <- 10          # Initialization
+y <- y + 5       # New value
+
+						\end{lstlisting}
+					\end{latin}
+					
+					در این مثال، مقدار \lr{y} ابتدا 10 است و بعداً به 15 تغییر می‌کند.
+
+			\subsection{تعریف متغیرها}
+				{\large صریح یا ضمنی بودن تعاریف}:
+				در زبان R، تعاریف متغیرها می‌توانند صریح (\lr{Explicit}) یا ضمنی (\lr{Implicit}) باشند.
+				
+				\subsubsection{تعریف صریح}
+				
+					متغیرها به وضوح توسط کاربر تعریف می‌شوند.
+					از عملگر تخصیص (<- یا =) برای این کار استفاده می‌شود.
+						\begin{latin}
+							\begin{lstlisting}[caption={\lr{Explicit Variable}}] 
+my_var <- 20
+
+							\end{lstlisting}
+						\end{latin}
+						
+				\subsubsection{تعریف ضمنی}
+					برخی اشیاء در \lr{R} به صورت ضمنی در زمان استفاده از آنها تعریف می‌شوند، مثلاً در توابع.
+					
+						\begin{latin}
+							\begin{lstlisting}[caption={\lr{Implicit Variable}}] 
+for (i in 1:5) {
+	print(i)
+}
+								
+							\end{lstlisting}
+						\end{latin}
+						
+						در اینجا متغیر \lr{i} بدون تعریف صریح، به طور خودکار در حلقه \lr{for} تعریف می‌شود.
+
+			\subsection{تاثیر پویا بودن انقیاد نوع و مقدار}
+				
+				انعطاف‌پذیری زبان \lr{R} به دلیل انقیاد پویا امکان تعریف متغیرها بدون در نظر گرفتن نوع را فراهم می‌کند، اما ممکن است خطاهای نوع (\lr{type error}) را در زمان اجرا افزایش دهد.
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Type error}}] 
+x <- 10
+x <- x + "5"   # Error: Unable to add number and string.
+
+						\end{lstlisting}
+					\end{latin}
+			
+			\subsection{کاربرد و مزایا}
+				
+				\begin{itemize}
+					
+					\item {\large انعطاف‌پذیری}:
+					{\normalsize مناسب برای تحلیل داده و کدنویسی سریع.}
+					
+					\item {\large سادگی}:
+					{\normalsize نیاز به تعریف دقیق نوع و مقدار ندارد.}
+					
+					\item {\large کاهش پیچیدگی}:
+					{\normalsize مناسب برای کاربران غیر برنامه‌نویس (مانند تحلیل‌گران داده).}
+					
+				\end{itemize}
+				
+			
+			\subsection{نتیجه‌گیری}
+				
+				
+				در زبان \lr{R}:
+			
+				\begin{enumerate}
+					
+					\item انقیاد نوع و مقدار به صورت پویا و در زمان اجرا (\lr{Runtime}) انجام می‌شود.
+					
+					\item تعاریف متغیرها می‌توانند صریح (با تخصیص مقدار) یا ضمنی (در توابع یا ساختارهای کنترلی) باشند.
+					
+					\item انعطاف‌پذیری انقیاد نوع و مقدار، \lr{R} را به زبانی ساده و مناسب برای تحلیل داده و آزمایش سریع ایده‌ها تبدیل کرده است.
+					
+				\end{enumerate}
+		
+		\section{بررسی انواع متغیرها}
+		
+			\subsection{متغیرهای ایستا (\lr{Static Variables})}
+				در زبان \lr{R}، متغیرهای ایستا به صورت صریح وجود ندارند. با این حال، متغیرهایی که خارج از بدنه توابع تعریف می‌شوند (مانند متغیرهای سراسری)، ممکن است به صورت ایستا در نظر گرفته شوند. این متغیرها در طول اجرای برنامه در حافظه باقی می‌مانند. مثال:
+				
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Static variables}}] 
+global_var <- 100  # Global variable
+
+my_function <- function() {
+	print(global_var)  # Access to a global variable
+}
+
+my_function()
+		
+						\end{lstlisting}
+					\end{latin}
+					
+					\begin{itemize}
+						
+						\item 
+						{\large پیاده‌سازی}
+						
+						
+						این متغیرها در فضایی به نام محیط جهانی (\lr{Global Environment}) ذخیره می‌شوند.
+						محیط جهانی در طول اجرای برنامه فعال است و متغیرها تا زمانی که برنامه در حال اجرا باشد، باقی می‌مانند.
+						
+						\item 
+						{\large سرعت تخصیص}
+						
+						
+						متغیرهای ایستا سریع‌تر از متغیرهای پویا تخصیص داده می‌شوند، زیرا در آغاز اجرا تخصیص می‌یابند.
+						
+					\end{itemize}
+			
+			\subsection{متغیرهای پویا در پشته (\lr{Dynamic Stack Variables})}
+				
+				متغیرهای تعریف‌شده داخل توابع، معمولاً در پشته ذخیره می‌شوند. این متغیرها فقط در طول اجرای تابع معتبر هستند. مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Dynamic stack variables}}] 
+my_function <- function() {
+	local_var <- 10  # Local variable
+	print(local_var)
+}
+
+my_function()
+# Unreachable error outside the function
+# print(local_var)
+
+						\end{lstlisting}
+					\end{latin}
+					
+					\begin{itemize}
+					
+					\item 
+					{\large پیاده‌سازی}
+					
+					
+					این متغیرها در محیط تابع (\lr{Function Environment}) ذخیره می‌شوند که در پشته مدیریت می‌شود.
+					زمانی که تابع تمام می‌شود، محیط آن نیز از بین می‌رود.
+					
+					
+					\item 
+					{\large سرعت تخصیص}
+					
+					
+					تخصیص در پشته سریع است، زیرا فقط به تغییر اشاره‌گر پشته نیاز دارد.
+					آزادسازی حافظه نیز خودکار و سریع انجام می‌شود.
+					
+					\end{itemize}
+				
+				
+			
+			\subsection{متغیرهای پویا در هیپ به طور صریح}
+			
+				در \lr{R}، هرگاه متغیری مانند یک بردار، لیست یا داده‌ای بزرگ تعریف شود، این متغیرها در هیپ ذخیره می‌شوند. کاربر به طور مستقیم از تخصیص حافظه آگاه نیست، اما تخصیص هیپ توسط مفسر \lr{R} انجام می‌شود. مثال:
+				
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Dynamic variables on heap explicitly}}] 
+large_vector <- rep(1, 1e6)  # Large vector
+print(object.size(large_vector))  # Check the size at the heap
+							
+						\end{lstlisting}
+					\end{latin}
+					
+					\begin{itemize}
+						
+						\item 
+						{\large پیاده‌سازی}
+						
+						
+						هیپ در R برای تخصیص حافظه اشیاء بزرگ‌تر و پیچیده‌تر (مانند بردارها و لیست‌ها) استفاده می‌شود.
+						مدیریت حافظه از طریق جمع‌آوری زباله (\lr{Garbage Collection}) انجام می‌شود.
+						
+						
+						\item 
+						{\large سرعت تخصیص}
+						
+						
+						تخصیص هیپ نسبت به پشته کندتر است، زیرا شامل درخواست‌های پیچیده‌تر از سیستم‌عامل و جمع‌آوری زباله است.
+						
+					\end{itemize}
+			
+			\subsection{متغیرهای پویا در هیپ به طور ضمنی}
+			
+				این نوع تخصیص زمانی رخ می‌دهد که \lr{R} به صورت خودکار برای متغیرهای کوچک یا موقتی نیز از هیپ استفاده کند. برای مثال، مقادیری که در عملیات‌های موقتی ایجاد می‌شوند. مثال:
+				
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Dynamic variables on heap implicitly}}] 
+result <- sum(1:100)  # Create a temporary value for the range
+print(result)
+
+						\end{lstlisting}
+					\end{latin}
+					
+					\begin{itemize}
+						
+						\item 
+						{\large پیاده‌سازی}
+						
+						
+						\lr{R} ممکن است برای مقادیر موقتی نیز حافظه‌ای در هیپ تخصیص دهد، اما این حافظه به سرعت پس از استفاده آزاد می‌شود.
+						
+						
+						\item 
+						{\large سرعت تخصیص}
+						
+						
+						سرعت این تخصیص نسبت به تخصیص مستقیم در پشته کمتر است، اما \lr{R} از بهینه‌سازی برای کاهش تاثیر عملکرد استفاده می‌کند.
+						
+					\end{itemize}
+				
+			
+			\subsection{مقایسه انواع متغیر}
+				\begin{table}[h!]
+					\centering
+					\begin{tabular}{|c|c|p{5cm}|}
+						\hline
+						\textbf{نوع تخصیص} & \textbf{سرعت تخصیص} & \textbf{دلایل} \\ \hline
+						ایستا (Static) & بسیار سریع & تخصیص در زمان شروع برنامه انجام می‌شود. \\ \hline
+						پویا در پشته (Stack) & سریع & مدیریت ساده با تغییر اشاره‌گر پشته. \\ \hline
+						پویا در هیپ (Heap) & متوسط تا کند & نیاز به درخواست‌های سیستم‌عامل و مدیریت زباله. \\ \hline
+						هیپ ضمنی (Implicit Heap) & کندتر & پیچیدگی در تخصیص موقت و آزادسازی سریع. \\ \hline
+					\end{tabular}
+					\caption{مقایسه انواع تخصیص و سرعت آن‌ها}
+					\label{table:allocation_speeds}
+				\end{table}
+				
+				
+			\subsection{نتیجه‌گیری}
+				زبان \lr{R} بیشتر از تخصیص پویا در هیپ استفاده می‌کند، اما تخصیص پشته نیز برای متغیرهای محلی وجود دارد. سرعت تخصیص متغیرها به نوع تخصیص و پیچیدگی اشیاء بستگی دارد. برای داده‌های کوچک و ساده، پشته سریع‌ترین گزینه است، در حالی که برای داده‌های بزرگ یا پیچیده، هیپ استفاده می‌شود که کندتر است. \lr{R} با استفاده از جمع‌آوری زباله و بهینه‌سازی داخلی، تاثیر کندی تخصیص در هیپ را کاهش می‌دهد.
+				
+			
+		\section{حوزه‌های تعریف زبان}
+		
+			\subsection{حوزه تعریف ایستا (\lr{Static Scope})}
+			
+				در حوزه ایستا، متغیرها بر اساس محل تعریف‌شان در کد (نه محل فراخوانی) تعیین می‌شوند.
+				\lr{R} از این نوع حوزه تعریف پشتیبانی می‌کند.
+				وقتی یک متغیر در داخل یک تابع تعریف نشده باشد، \lr{R} به محیط لغوی تابع نگاه می‌کند (محیطی که تابع در آن تعریف شده است) و متغیر را از آنجا می‌گیرد. مثال حوزه ایستا:
+				
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Static scope}}] 
+x <- 10  # variable in the global environment
+
+outer_function <- function() {
+	inner_function <- function() {
+		return(x)  # x takes from the lexical environment
+	}
+	return(inner_function())
+}
+
+print(outer_function())  # output: 10
+
+						\end{lstlisting}
+					\end{latin}
+					
+					در این مثال، متغیر \lr{x} در محیط جهانی تعریف شده است و تابع \lr{inner\_function} آن را بر اساس محیط لغوی تابع پیدا می‌کند.
+			
+			\subsection{حوزه تعریف پویا (Dynamic Scope)}
+			
+				در حوزه پویا، متغیرها بر اساس محل فراخوانی تابع (نه محل تعریف) تعیین می‌شوند.
+				\lr{R} به طور پیش‌فرض این نوع حوزه را پشتیبانی نمی‌کند، اما می‌توان آن را با استفاده از ویژگی‌های مدیریت محیط‌ها (مانند \lr{parent.frame()} یا \lr{assign()}) شبیه‌سازی کرد. مثال:
+			
+			
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Dynamic scope}}] 
+dynamic_function <- function() {
+	print(x)  # x takes from the calling environment
+}
+
+caller_function <- function() {
+	x <- 20  # Define x in this environment
+	dynamic_function()
+}
+
+caller_function()  # output: 20
+
+						\end{lstlisting}
+					\end{latin}
+					در این مثال، با استفاده از ویژگی‌های محیط، رفتار حوزه پویا شبیه‌سازی شده است.
+					
+			\subsection{افزودن حوزه پویا به زبان \lr{R}}
+				
+				اگر بخواهیم حوزه پویا را به \lr{R} اضافه کنیم، باید تغییرات زیر اعمال شود:
+				
+				\begin{enumerate}
+					
+					\item 
+					{\large مدیریت محیط اجرا (\lr{Execution Environment})}
+					
+					
+					به جای استفاده از محیط لغوی، تابع باید به محیط فراخوانی دسترسی داشته باشد.
+					این کار با تغییر نحوه ذخیره و جستجوی متغیرها در محیط‌ها ممکن می‌شود.
+					
+					\item
+					{\large پیاده‌سازی نمونه}
+					
+					
+					برای شبیه‌سازی این تغییر، می‌توان از یک مفسر اصلاح‌شده یا تابعی کمکی استفاده کرد.
+					
+				\end{enumerate}
+				
+				نمونه کد برای حوزه پویا:
+				
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Adding a dynamic scope to R}}] 
+dynamic_scope <- function() {
+	print(x)  # Gets x from the calling environment
+}
+
+caller_function <- function() {
+	x <- 30  # Define x in the calling environment
+	evalq(dynamic_scope(), envir = environment())  # Function execution in the calling environment
+}
+
+caller_function()  # output: 30
+
+						\end{lstlisting}
+					\end{latin}
+				در اینجا، با استفاده از \lr{evalq()} و انتقال محیط، رفتار حوزه پویا شبیه‌سازی شده است.
+					
+			
+			\subsection{پشتیبانی از هر دو نوع حوزه در \lr{R}}
+			
+				\lr{R} به طور مستقیم فقط حوزه ایستا دارد.
+				حوزه پویا را می‌توان با استفاده از محیط‌های پویا (مانند \lr{parent.frame()} یا \lr{evalq()}) شبیه‌سازی کرد.
+			
+			\subsection{بلوک‌ها و کلمات کلیدی حوزه در \lr{R}}
+				
+				در \lr{R}، بلوک‌ها با استفاده از {} تعریف می‌شوند.
+				هیچ کلمه کلیدی خاصی برای تغییر مستقیم حوزه تعریف وجود ندارد، اما می‌توان با استفاده از توابع مدیریتی مانند \lr{assign()}، \lr{environment()}، \lr{parent.frame()} و \lr{eval()} به صورت ضمنی حوزه را تغییر داد. مثال بلوک:
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{Blocks in R}}] 
+{
+	y <- 50
+	print(y)
+}
+# y is not available outside the block
+# print(y)  # Error: object 'y' not found
+
+					\end{lstlisting}
+				\end{latin}
+				
+			\subsection{نتیجه‌گیری}
+			
+				\begin{itemize}
+					
+					\item {\large حوزه ایستا}:
+					{\normalsize \lr{R} به طور پیش‌فرض از این نوع استفاده می‌کند و متغیرها را از محیط تعریف پیدا می‌کند.}
+					
+					\item {\large حوزه پویا}:
+					{\normalsize پشتیبانی مستقیم وجود ندارد، اما می‌توان آن را شبیه‌سازی کرد.	}
+					
+					\item {\large بلوک‌ها}:
+					{\normalsize ر \lr{R} با {} تعریف می‌شوند و هیچ کلمه کلیدی خاصی برای مدیریت حوزه وجود ندارد، اما توابع محیطی می‌توانند حوزه را به طور غیرمستقیم تغییر دهند.}
+					
+				\end{itemize}
+			
+		\section{نوع‌های داده‌ای}
+			
+			\subsection{نوع‌های داده‌ای پایه (\lr{Basic Data Types})}
+				
+				زبان \lr{R} از انواع داده‌ای مختلفی پشتیبانی می‌کند که برای تحلیل داده‌ها، محاسبات آماری، و کار با داده‌های پیچیده طراحی شده‌اند. در اینجا، تمامی انواع داده‌ای در \lr{R}، نحوه تخصیص آنها در حافظه، پیاده‌سازی، و ویژگی‌های هرکدام توضیح می‌دهیم:
+			
+				\subsubsection{منطقی (\lr{Logical})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize \lr{TRUE}, \lr{FALSE}, یا \lr{NA} (عدم مقدار)}
+						
+						\item {\large کاربرد}:
+						{\normalsize برای شرط‌ها و عملگرهای بولی.}
+						
+						\item {\large عملگرها}:
+						{\normalsize \& (\lr{AND})، | (\lr{OR})، ! (\lr{NOT}).}
+						
+						\item {\large تخصیص در حافظه}:
+						{\normalsize معمولاً به صورت ۱ بیت یا بیشتر برای ذخیره مقدار منطقی.}
+						
+					\end{itemize}
+					
+					مثال:
+						\begin{latin}
+							\begin{lstlisting}[caption={\lr{Logical data type}}] 
+x <- TRUE
+y <- FALSE
+z <- x & y  # FALSE
+
+							\end{lstlisting}
+						\end{latin}
+					
+				
+				\subsubsection{عددی (\lr{Numeric})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  .مقادیر عددی (شامل مقادیر اعشاری)}
+						
+						\item {\large کاربرد}:
+						{\normalsize محاسبات ریاضی و آماری.}
+						
+						\item {\large عملگرها}:
+						{\normalsize +, -, *, /, توان، \lr{\%\%} (باقیمانده).}
+						
+						\item {\large تخصیص در حافظه}:
+						{\normalsize به صورت پیش‌فرض ۸ بایت (64 بیت) برای هر مقدار.}
+						
+					\end{itemize}
+					
+					مثال:
+
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Numeric data type}}] 
+a <- 3.14
+b <- 2
+result <- a + b  # 5.14
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\subsubsection{عدد صحیح (\lr{Integer})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  شامل مقادیر عددی صحیح.}
+						
+						\item {\large کاربرد}:
+						{\normalsize شمارنده‌ها و محاسبات عدد صحیح.}
+						
+						\item {\large ایجاد مقدار}:
+						{\normalsize با استفاده از \lr{L} پس از عدد.}
+						
+						\item {\large تخصیص در حافظه}:
+						{\normalsize ۴ بایت (32 بیت).}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Integer data type}}] 
+int_val <- 5L
+typeof(int_val)  # "integer"
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\subsubsection{رشته‌ای (\lr{Character})}
+					
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  شامل مقادیر متنی.}
+						
+						\item {\large کاربرد}:
+						{\normalsize پردازش رشته‌ها، نام‌گذاری، و تحلیل متن.}
+						
+						\item {\large عملگرها}:
+						{\normalsize الحاق (\lr{paste} و \lr{paste0}).}
+						
+						\item {\large تخصیص در حافظه}:
+						{\normalsize به صورت آرایه‌ای از کاراکترها با طول متغیر.}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Character data type}}] 
+str <- "Hello"
+full_str <- paste(str, "World")  # "Hello World"
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\subsubsection{مختلط (\lr{Complex})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  شامل مقادیر مختلط (a + bi).}
+						
+						\item {\large کاربرد}:
+						{\normalsize محاسبات ریاضی پیشرفته.}
+						
+						\item {\large عملگرها}:
+						{\normalsize جمع، تفریق، ضرب، تقسیم.}
+						
+						\item {\large تخصیص در حافظه}:
+						{\normalsize شامل دو مقدار عددی برای بخش حقیقی و موهومی.}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Complex data type}}] 
+comp <- 3 + 2i
+Im(comp)  # 2
+
+						\end{lstlisting}
+					\end{latin}
+				
+			\subsection{ساختارهای داده‌ای پیچیده (\lr{Advanced Data Structures})}
+			
+				\subsubsection{بردار (\lr{Vector})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  مجموعه‌ای از مقادیر همگن.}
+						
+						\item {\large کاربرد}:
+						{\normalsize تحلیل داده و آرایه‌های یک‌بعدی.}
+						
+						\item {\large عملگرها}:
+						{\normalsize \lr{length}‌ و [ ] برای دسترسی.}
+						
+						\item {\large پیاده‌سازی}:
+						{\normalsize به صورت آرایه در حافظه.}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Vector data type}}] 
+vec <- c(1, 2, 3)
+vec[1]  # 1
+
+						\end{lstlisting}
+					\end{latin}
+				
+				
+				
+				\subsubsection{ماتریس (\lr{Matrix})}
+					
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  آرایه‌ای دوبعدی از مقادیر همگن.}
+						
+						\item {\large کاربرد}:
+						{\normalsize محاسبات ماتریسی.}
+						
+						\item {\large پیاده‌سازی}:
+						{\normalsize به صورت آرایه دوبعدی.}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Matrix data type}}] 
+mat <- matrix(1:6, nrow=2)
+mat[1, 2]  # 3
+
+						\end{lstlisting}
+					\end{latin}
+				
+				
+				
+				\subsubsection{لیست (\lr{List})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  شامل مقادیر ناهمگن.}
+						
+						\item {\large کاربرد}:
+						{\normalsize ذخیره ساختارهای پیچیده.}
+						
+						\item {\large پیاده‌سازی}:
+						{\normalsize اشاره‌گرهایی به مقادیر مختلف در حافظه.}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{List data type}}] 
+lst <- list(num=1, txt="Hello", vec=c(1,2,3))
+lst$num  # 1
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\subsubsection{چارچوب داده (\lr{Data Frame})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  ساختاری جدولی برای داده.}
+						
+						\item {\large کاربرد}:
+						{\normalsize ساختاری جدولی برای داده.}
+						
+						\item {\large پیاده‌سازی}:
+						{\normalsize به صورت لیست با ستون‌های هم‌طول.}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Data Frame data type}}] 
+df <- data.frame(A=c(1,2), B=c("X", "Y"))
+df$A  # ستون A
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\subsubsection{آرایه (\lr{Array})}
+				
+					\begin{itemize}
+						
+						\item {\large مقادیر}:
+						{\normalsize  آرایه چندبعدی از مقادیر همگن.}
+						
+						\item {\large کاربرد}:
+						{\normalsize محاسبات چندبعدی.}
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Array data type}}] 
+arr <- array(1:8, dim=c(2,2,2))
+arr[1,1,1]  # 1
+
+						\end{lstlisting}
+					\end{latin}
+				
+			\subsection{اشاره‌گرها و متغیرهای مرجع}
+				
+				\lr{R} به طور مستقیم اشاره‌گرها را در اختیار کاربر قرار نمی‌دهد.
+				تمامی اشیاء در \lr{R} به صورت مرجع‌محور (\lr{Reference-Based}) مدیریت می‌شوند.
+				عملگر \lr{address()} برای بررسی مکان حافظه استفاده می‌شود.
+		
+			\subsection{بازیافت حافظه (Garbage Collection)}
+			
+				\lr{R} از یک جمع‌آوری زباله (\lr{Garbage Collector}) استفاده می‌کند.
+				
+				\begin{itemize}
+					
+					\item {\large پیاده‌سازی}:
+					{\normalsize از روش‌های ردیابی و شمارش مرجع برای آزادسازی حافظه اشیاء استفاده می‌شود.}
+					
+					\item {\large عملگر}:
+					{\normalsize \lr{gc()} برای اجرای دستی جمع‌آوری زباله.}
+					
+				\end{itemize}
+		
+			\subsection{رفع مشکلات نشتی حافظه و اشاره‌گر معلق}
+			
+				\lr{R} به دلیل مدیریت خودکار حافظه، از مشکلاتی مانند اشاره‌گر معلق (\lr{Dangling Pointer}) جلوگیری می‌کند.
+				مدیریت: اشیاء استفاده‌نشده توسط \lr{Garbage Collector} شناسایی و آزاد می‌شوند.
+			
+			\subsection{نتیجه‌گیری}
+			
+				\begin{itemize}
+					
+					\item \lr{R} طیف وسیعی از نوع‌های داده‌ای ساده و پیچیده را ارائه می‌دهد.
+					
+					\item حافظه به صورت خودکار و بهینه تخصیص می‌یابد.
+					
+					\item بازیافت حافظه به جلوگیری از مشکلات نشتی حافظه کمک می‌کند، و این ویژگی \lr{R} را برای تحلیل داده‌های پیچیده ایده‌آل می‌کند.
+					
+				\end{itemize}
+	
+	
+	\begin{thebibliography}{9}
+		
+		\bibitem{RProject}
+		\lr{The R Project for Statistical Computing}: وب‌سایت رسمی زبان \lr{R} که مستندات رسمی و جامع در مورد زبان، ساختارها، و پیاده‌سازی آن را ارائه می‌دهد.  
+		
+		\url{https://www.r-project.org}
+		
+		\bibitem{RDocumentation}
+		\lr{R Documentation}: پایگاه داده‌ای گسترده از مستندات \lr{R} برای توابع و کتابخانه‌های مختلف.
+		  
+		\url{https://www.rdocumentation.org}
+		
+		\bibitem{AdvancedR}
+		\lr{Advanced R by Hadley Wickham}: کتابی معتبر درباره مفاهیم پیشرفته در \lr{R}، شامل مدیریت حافظه، پیاده‌سازی داده‌ها، و مفاهیم مرتبط با حوزه تعریف.  
+		
+		\url{https://adv-r.hadley.nz}
+		
+		\bibitem{RForDataScience}
+		\lr{R for Data Science}: کتابی از \lr{Hadley Wickham} و \lr{Garrett Grolemund} که اصول برنامه‌نویسی و تحلیل داده با \lr{R} را پوشش می‌دهد. 
+		 
+		\url{https://r4ds.had.co.nz}
+		
+		\bibitem{GarbageCollection}
+		Garbage Collection in R: مستنداتی درباره جمع‌آوری زباله و مدیریت حافظه در \lr{R}. 
+		 
+		\url{https://stat.ethz.ch/R-manual/R-devel/library/base/html/gc.html}
+		
+		\bibitem{RProgramming}
+		\lr{R Programming for Data Science by Roger D. Peng}: کتابی با تمرکز بر اصول برنامه‌نویسی \lr{R} برای دانش داده و تحلیل آماری.  
+		
+		\url{https://leanpub.com/rprogramming}
+		
+		\bibitem{StackOverflow}
+		\lr{Stack Overflow (R Tag)}: انجمنی فعال برای پرسش و پاسخ در مورد مسائل برنامه‌نویسی \lr{R}.  
+		
+		\url{https://stackoverflow.com/questions/tagged/r}
+		
+		\bibitem{CRAN}
+		\lr{CRAN (Comprehensive R Archive Network)}: مخزن رسمی \lr{R} برای دانلود بسته‌ها و مستندات مرتبط.  
+		
+		\url{https://cran.r-project.org}
+		
+		\bibitem{W3Schools}
+		\lr{W3Schools}: وب‌سایتی آموزشی برای یادگیری زبان \lr{R} و دیگر تکنولوژی‌های برنامه‌نویسی.  
+		
+		\url{https://www.w3schools.com/r/}
+		
+	\end{thebibliography}
+	
+	
 
 \end{document}
