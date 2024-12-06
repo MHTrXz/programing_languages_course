@@ -122,7 +122,7 @@
 		
 		
 		\vspace{2cm}
-		{\Large سیدمحمدحسین هاشمی نصرآبادی}\par
+		{\Large سیدمحمدحسین هاشمی}\par
 		{\Large بردیا جوادی}\par
 		\vspace{1cm}
 		{\large استاد : دکتر آرش شفیعی}\par
@@ -142,7 +142,7 @@
 	
 	\tableofcontents
 	\listoftables 
-	\listoffigures
+	%\listoffigures
 	\lstlistoflistings
 	\newpage
 	
@@ -462,7 +462,195 @@
 					{\normalsize \lr{SAS} گزینه مناسبی است.}
 					
 				\end{itemize}
+				
+		\section{نوع پیاده‌سازی}
+		
+			\begin{itemize}
+				
+				\item {\large تفسیرشده}:
+				{\normalsize \lr{R} به طور اصلی یک زبان تفسیرشده است، به این معنی که کدها به صورت خط به خط توسط مفسر اجرا می‌شوند. این قابلیت به تحلیل‌گران اجازه می‌دهد تا کدها را به صورت تعاملی اجرا کنند و سریعاً نتایج را ببینند.}
+				
+				\item {\large کامپایل جزئی (\lr{Just-in-Time Compilation})}:
+				{\normalsize از نسخه 2.13 به بعد، \lr{R} از کامپایلر JIT\LTRfootnote{Just-in-Time} بهره می‌برد که با استفاده از بسته \lr{compiler} ارائه شده است. \lr{JIT} بهینه‌سازی‌هایی برای اجرای سریع‌تر کدها فراهم می‌کند.
+				}
+				
+				\item {\large پیاده‌سازی ترکیبی}:
+				{\normalsize اگرچه \lr{R} عمدتاً تفسیرشده است، برای برخی از عملیات‌های پیچیده‌تر، از کدهای \lr{C} و \lr{Fortran} استفاده می‌شود که کامپایل شده‌اند تا کارایی بیشتری داشته باشند.
+				}
+			\end{itemize}
 
+		\section{مفسرها و کامپایلرهای موجود برای \lr{R}}
+		
+			\begin{enumerate}
+				
+				\item {\large \lr{GNU R} (\lr{R} پایه)}:
+				
+				\begin{itemize}
+					
+					\item  {\large توسعه‌دهنده}:
+					{\normalsize تیم توسعه \lr{R} که یک گروه جهانی از متخصصان و دانشمندان داده است.}
+					
+					\item {\large ویژگی‌ها}:
+					
+					\begin{itemize}
+						
+						\item مفسر اصلی زبان \lr{R}.
+						
+						\item پیاده‌سازی به زبان \lr{C} و \lr{Fortran}.
+						
+						\item استفاده از بسته \lr{compiler} برای کامپایل جزئی.
+						
+					\end{itemize}
+					
+					\item {\large مزایا}:
+					
+					\begin{itemize}
+						
+						\item منبع‌باز و رایگان.
+						
+						\item پایدار و استاندارد، با پشتیبانی وسیع از جامعه کاربری.
+						
+					\end{itemize}
+					
+				\end{itemize}
+				
+				
+				\item {\large \lr{FastR}}:
+				
+				\begin{itemize}
+					
+					\item  {\large توسعه‌دهنده}:
+					{\normalsize تیم \lr{Oracle Labs} به عنوان بخشی از پروژه \lr{GraalVM}.}
+					
+					\item {\large ویژگی‌ها}:
+					
+					\begin{itemize}
+						
+						\item یک پیاده‌سازی جایگزین برای \lr{R} با هدف افزایش سرعت اجرا.
+						
+						\item از JIT برای اجرای سریع‌تر کدها بهره می‌برد.
+						
+					\end{itemize}
+					
+					\item {\large مزایا}:
+					
+					\begin{itemize}
+						
+						\item بهینه‌سازی برای کاربردهای داده‌های حجیم و عملکرد سریع‌تر نسبت به \lr{GNU R}.
+						
+						\item سازگاری با ابزارهای \lr{GraalVM}.
+						
+					\end{itemize}
+					
+				\end{itemize}
+				
+				
+				\item {\large \lr{Renjin}}:
+				
+				\begin{itemize}
+					
+					\item  {\large توسعه‌دهنده}:
+					{\normalsize BeDataDriven، یک شرکت هلندی.}
+					
+					\item {\large ویژگی‌ها}:
+					
+					\begin{itemize}
+						
+						\item پیاده‌سازی \lr{R} در \lr{JVM}\LTRfootnote{Java Virtual Machine}.
+						
+						\item مناسب برای ادغام با سیستم‌های مبتنی بر جاوا.
+						
+					\end{itemize}
+					
+					\item {\large مزایا}:
+					
+					\begin{itemize}
+						
+						\item کارایی بالا در محیط‌های سازمانی جاوا.
+						
+						\item امکان ادغام مستقیم با زیرساخت‌های جاوا.
+						
+					\end{itemize}
+					
+				\end{itemize}
+				
+				
+				\item {\large \lr{pqR}}:
+				
+				\begin{itemize}
+					
+					\item  {\large توسعه‌دهنده}:
+					{\normalsize \lr{Radford Neal}، یک آماردان برجسته.}
+					
+					\item {\large ویژگی‌ها}:
+					
+					\begin{itemize}
+						
+						\item یک نسخه بهینه‌شده از \lr{GNU R} با تمرکز بر اجرای سریع‌تر.
+						
+						\item بهره‌گیری از پردازش موازی برای بهبود کارایی.
+						
+					\end{itemize}
+					
+					\item {\large مزایا}:
+					
+					\begin{itemize}
+						
+						\item سرعت بالاتر برای تحلیل داده‌ها.
+						
+						\item مناسب برای کاربران حرفه‌ای تر.
+						
+					\end{itemize}
+					
+				\end{itemize}
+				
+				
+				\item {\large \lr{Microsoft R Open (MRO)}}:
+				
+				\begin{itemize}
+					
+					\item  {\large توسعه‌دهنده}:
+					{\normalsize مایکروسافت (\lr{Microsoft}).}
+					
+					\item {\large ویژگی‌ها}:
+					
+					\begin{itemize}
+						
+						\item نسخه بهینه‌شده R با بهبود عملکرد.
+						
+						\item شامل بسته‌های از پیش کامپایل‌شده و بهینه‌سازی شده برای تحلیل داده.
+						
+					\end{itemize}
+					
+					\item {\large مزایا}:
+					
+					\begin{itemize}
+						
+						\item یکپارچگی با ابزارهای مایکروسافت مانند \lr{Azure Machine Learning}.
+						
+						\item سرعت بیشتر در پردازش داده‌های حجیم.
+						
+					\end{itemize}
+					
+				\end{itemize}
+				
+			\end{enumerate}
+			
+			\begin{table}[h!]
+				\centering
+				\begin{tabular}{|c|p{5cm}|p{5cm}|}
+					\hline
+					\textbf{پیاده‌سازی} & \textbf{مزایا} & \textbf{معایب} \\ \hline
+					\lr{GNU R} & استاندارد و قابل اعتماد، منبع‌باز، جامعه کاربری گسترده & سرعت پایین‌تر نسبت به نسخه‌های بهینه‌شده \\ \hline
+					\lr{FastR} & سرعت بیشتر، سازگاری با \lr{GraalVM} & نیاز به پیکربندی پیشرفته \\ \hline
+					\lr{Renjin} & سازگاری با جاوا، مناسب برای محیط‌های سازمانی & محدودیت در پشتیبانی برخی از بسته‌های \lr{R} \\ \hline
+					\lr{pqR} & پردازش موازی، کارایی بالا & جامعه کاربری کوچک‌تر \\ \hline
+					\lr{Microsoft R Open} & سازگاری با ابزارهای مایکروسافت، سرعت بیشتر & وابستگی به اکوسیستم مایکروسافت \\ \hline
+				\end{tabular}
+				\caption{مقایسه پیاده‌سازی‌های مختلف زبان R}
+				\label{table:r_implementations}
+			\end{table}
+			
 	
 	
 	\chapter{نحو و معنا شناسی}
