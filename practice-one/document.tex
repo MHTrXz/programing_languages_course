@@ -1,0 +1,722 @@
+\documentclass[11pt, a4paper, oneside]{article}
+
+% URLs and hyperlinks ---------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,      
+	urlcolor=blue,
+}
+\usepackage[inline]{enumitem}
+\usepackage{xurl}
+
+\usepackage{caption}
+%---------------------------------------------------
+
+% page headers -------------------------------------------------
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{fancy}
+\fancyhf{}% Clear header/footer
+\fancyhead[L]{\nouppercase\leftmark}
+\fancyhead[R]{\thepage}
+%---------------------------------------------------------------
+
+% adjust a verrrrry big table -------------------------------
+\usepackage{adjustbox}
+% -----------------------------------------------------------
+
+% titlepage -------------------------------------------------
+\usepackage{pdfpages}
+%------------------------------------------------------------
+
+
+% Rn custom item in enumeration -----------------------------
+\newcounter{itemadded}
+\setcounter{itemadded}{0}
+
+
+\newcommand{\addeditem}{%
+	\addtocounter{enumi}{-1}%
+	\stepcounter{itemadded}
+	\let\LaTeXStandardLabelEnumi\labelenumi%
+	\addtocounter{enumi}{1}
+	\renewcommand{\labelenumi}{\arabic{enumi}\lr{R}.}%
+	\item 
+	% Switch back to old labelling 
+	\let\labelenumi\LaTeXStandardLabelEnumi%
+}%
+
+
+\let\LaTeXStandardEnumerateBegin\enumerate
+\let\LaTeXStandardEnumerateEnd\endenumerate
+
+\renewenvironment{enumerate}{%
+	\LaTeXStandardEnumerateBegin%
+	\setcounter{itemadded}{0}
+}{%
+	\LaTeXStandardEnumerateEnd%
+}%
+% -----------------------------------------------------------
+
+% tables -------------------------------------------------------
+\usepackage{float}
+\usepackage{multirow}
+\renewcommand{\arraystretch}{1.23}
+% ---------------------------------------------------------------------
+
+\usepackage{listings}
+\usepackage{forest}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=Lisp,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{xepersian}
+\settextfont{Yas}
+\setdigitfont{Yas}
+\setlatintextfont{Yas}
+
+\renewcommand{\lstlistlistingname}{فهرست کد‌ها}
+\renewcommand{\bibname}{منابع}
+
+
+\begin{document}
+	\begin{titlepage}
+		\centering
+		\includegraphics[width=3.2cm, height=3.2cm]{images/logo}\par
+		\vspace{5mm}
+		{\LARGE دانشگاه اصفهان}\par
+		\vspace{5mm}
+		{\Large دانشکده مهندسی کامپیوتر}\par
+		
+		\vspace{2cm}
+		
+		{\Large تکلیف سری اول}\par
+		
+		\vspace{1cm}
+		
+		{\Large درس زبان‌های برنامه نویسی}\par
+		
+		\vspace{1cm}
+		{\Huge آشنایی با زبان \lr{RUST}}\par
+		
+		
+		\vspace{2cm}
+		{\Large سیدمحمدحسین هاشمی}\par
+		\vspace{1cm}
+		{\large استاد : دکتر آرش شفیعی}\par
+
+		\vspace{2cm}
+		
+		% Bottom of the page
+		{\large پاییز 1403\par}
+	\end{titlepage}
+	
+	\clearpage
+	\begin{center}
+		\includegraphics[width=10cm]{images/image002}
+	\end{center}  
+	\thispagestyle{plain}\mbox{} 
+	\clearpage
+	
+	\tableofcontents
+	%\listoftables 
+	%\listoffigures
+	%\lstlistoflistings
+	\newpage
+	
+	\section{اسکیم در مقابل لیسپ}
+	
+		\begin{itemize}
+			
+			\item[الف.] چرا مجموعه کلمات کلیدی کوچک‌تر و مشخصات مختصر اسکیم می‌تواند مفید باشد؟
+			
+			\begin{itemize}
+				
+				\item {\large سادگی و یادگیری آسان‌تر}:
+				{\normalsize تعداد کم کلمات کلیدی یادگیری زبان را برای مبتدیان ساده‌تر می‌کند.}
+				
+				\item {\large انعطاف‌پذیری و قابلیت بیان بالا}:
+				{\normalsize توسعه‌دهندگان آزادی بیشتری برای ایجاد انتزاعات دارند بدون اینکه با تعداد زیادی از ساختارهای از پیش تعریف‌شده محدود شوند.}
+				
+				\item {\large تمرکز بر مفاهیم اصلی}:
+				{\normalsize اسکیم بر سادگی تأکید دارد و برنامه‌نویسان را تشویق می‌کند تا مفاهیم اصلی مانند بازگشت (\lr{recursion}) و برنامه‌نویسی تابعی را بهتر درک کنند.}
+				
+			\end{itemize}
+			
+			\item[ب.] مثالی از تفاوت در رفتار با توجه به نوع محدوده (ایستا یا پویا):
+			
+			فرض کنید کد زیر نوشته شده است:
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{Q1 B}}]
+(define x 10)  ;; global variable x
+
+(define (foo) x)  ;; The function returns the value of x
+
+(define (bar)
+(let ((x 20))  ;; Local variable x
+(foo)))      ;; calling foo
+
+(bar)
+
+					\end{lstlisting}
+				\end{latin}
+				
+				\begin{itemize}
+					
+					\item {\large محدوده ایستا (\lr{Static Scoping})}:
+					{\normalsize مقدار x در تابع \lr{foo} بر اساس جایی که \lr{foo} تعریف شده تعیین می‌شود، نه جایی که فراخوانی شده است. خروجی: 10 (مقدار سراسری \lr{x}).}
+					
+					\item {\large محدوده پویا (\lr{Dynamic Scoping})}:
+					{\normalsize مقدار \lr{x} در تابع \lr{foo} بر اساس محیط فراخوانی \lr{bar} تعیین می‌شود. خروجی: 20 (مقدار محلی \lr{x} در \lr{bar}).}
+					
+				\end{itemize}
+				
+				محدوده پویا می‌تواند رفتار غیرقابل پیش‌بینی ایجاد کند، در حالی که محدوده ایستا قابل فهم‌تر و ساده‌تر برای اشکال‌زدایی است.
+				
+			\section{گام‌به‌گام ارزیابی عبارات در \lr{Lisp}}
+			
+				\begin{itemize}
+					
+					\item[الف.] گام‌به‌گام ارزیابی عبارات در \lr{Lisp}
+					
+						\begin{enumerate}
+							
+							\item عبارت اول:
+							\begin{latin}
+								\begin{lstlisting}[caption={\lr{Q2 A 1}}]
+(eval '(+ 1 2 (eval '(+ 3 4))))
+
+								\end{lstlisting}
+							\end{latin}
+							
+							\begin{itemize}
+								
+								\item {\large گام اول} \par
+								{\normalsize ارزیابی داخلی‌ترین عبارت \lr{(eval '(+ 3 4))}} \par
+								{\normalsize عبارت \lr{(+ 3 4)} به دلیل نقل قول (\lr{quote}) به عنوان یک داده لیست به \lr{eval} داده می‌شود.} \par
+								{\normalsize عبارت \lr{(+ 3 4)} به دلیل نقل قول (\lr{quote}) به عنوان یک داده لیست به \lr{eval} داده می‌شود.} \par
+								
+								\item {\large گام دوم} \par
+								{\normalsize ارزیابی عبارت \lr{(+ 1 2 7)}} \par
+								{\normalsize این عبارت یک جمع ساده است که نتیجه‌ی آن 10 خواهد بود.}
+								
+							\end{itemize}
+							خروجی نهایی: 10.
+							
+							
+							\item عبارت دوم:
+							\begin{latin}
+								\begin{lstlisting}[caption={\lr{Q2 A 2}}]
+(cons 1 (list 2 3 (eval (cdr (cons 4 '(cdr '(5 6)))))))
+
+								\end{lstlisting}
+							\end{latin}
+							
+							\begin{itemize}
+							
+							\item {\large گام اول} \par
+							{\normalsize ارزیابی \lr{(cons 4 '(cdr '(5 6)))}} \par
+							{\normalsize \lr{cons} یک لیست می‌سازد که عنصر اول 4 و عنصر دوم \lr{'(cdr '(5 6))} به عنوان داده باقی می‌ماند.} \par
+							{\normalsize نتیجه: \lr{(4 cdr '(5 6))}}
+							
+							\item {\large گام دوم} \par
+							{\normalsize ارزیابی \lr{(cdr (cons 4 '(cdr '(5 6))))}} \par
+							{\normalsize \lr{cdr} عنصر دوم لیست ساخته‌شده در مرحله قبل را برمی‌گرداند.} \par
+							{\normalsize بنابراین خروجی \lr{cdr} برابر \lr{'cdr '(5 6)} می‌شود.} \par
+							
+							\item {\large گام سوم} \par
+							{\normalsize \lr{eval} ابتدا \lr{cdr} را اعمال می‌کند بر روی لیست \lr{'(5 6)}.} \par
+							{\normalsize \lr{cdr} عنصر دوم لیست را برمی‌گرداند که برابر با \lr{'(6)} است.} \par
+							{\normalsize نتیجه: \lr{(eval (cdr '(5 6))) → '(6)}} \par
+							
+							\item {\large گام چهارم} \par
+							{\normalsize \lr{list} عناصر \lr{2}، \lr{3} و \lr{'(6)} را در یک لیست قرار می‌دهد.} \par
+							{\normalsize نتیجه: \lr{(2 3 (6))}} \par
+							
+							\item {\large گام پنجم} \par
+							{\normalsize \lr{cons} عنصر \lr{1} را به ابتدای لیست \lr{(2 3 (6))} اضافه می‌کند.} \par
+							
+							\end{itemize}
+							خروجی نهایی: \lr{(1 2 3 (6))}
+							
+							
+						\end{enumerate}
+					
+					
+					\item[ب.] پیاده‌سازی \lr{eval} در \lr{Lisp} با استفاده از نقل قول و پردازش لیست
+					
+					\lr{eval} را می‌توان در \lr{Lisp} با ترکیب قابلیت‌های زیر پیاده‌سازی کرد:
+					
+						\begin{enumerate}
+							
+							\item {\large نقل قول (\lr{Quoting})}:
+							{\normalsize نقل قول (') به ما اجازه می‌دهد کد را به عنوان داده ذخیره کنیم و آن را به دلخواه پردازش کنیم.}
+							
+							\item {\large پردازش لیست‌ها (\lr{List Processing})}:
+							{\normalsize از توابعی مانند \lr{car} (برای دسترسی به عنصر اول لیست)، cdr (برای دسترسی به بقیه عناصر لیست) و \lr{cons} (برای ساخت لیست) استفاده می‌کنیم.}
+							
+							\item {\large تطبیق الگو (\lr{Pattern Matching})}:
+							{\normalsize برای شناسایی ساختار عبارات (مثلاً توابع و عملگرها) از تطبیق الگو بهره می‌گیریم.}
+							
+						\end{enumerate}
+						
+						\begin{latin}
+							\begin{lstlisting}[caption={\lr{Q2 B - Pseudo code for eval}}]
+(defun my-eval (expr)
+(cond
+((atom expr) expr)  ;; If expr is an atom (number, symbol), return itself
+((equal (car expr) 'quote) (cadr expr))  ;; Quote mode
+((equal (car expr) 'if)  ;; simple condition
+(if (my-eval (cadr expr))
+(my-eval (caddr expr))
+(my-eval (cadddr expr))))
+(t  ;; Mode of calling functions
+(apply (my-eval (car expr)) (mapcar #'my-eval (cdr expr))))))
+
+							\end{lstlisting}
+						\end{latin}
+						
+						توضیح کد:
+						
+						\begin{enumerate}
+							
+							\item اگر \lr{expr} یک اتم باشد (عدد یا نماد)، خودش برگردانده می‌شود.
+							
+							\item اگر \lr{expr} یک نقل قول باشد، مقدار دوم لیست (داده‌ی نقل‌قول‌شده) برگردانده می‌شود.
+							
+							\item شرطی (\lr{if}): شرط بررسی و یکی از شاخه‌ها ارزیابی می‌شود.
+							
+							\item فراخوانی توابع:
+							
+							\begin{itemize}
+								
+								\item ابتدا تابع (عنصر اول لیست) ارزیابی می‌شود.
+								
+								\item سپس آرگومان‌های تابع با \lr{mapcar} ارزیابی می‌شوند.
+								
+								\item در نهایت، تابع با آرگومان‌ها اجرا می‌شود (\lr{apply}).
+								
+							\end{itemize}
+							با این منطق، می‌توان \lr{eval} را به‌طور بازگشتی برای هر عبارت \lr{Lisp} پیاده‌سازی کرد.
+							
+							
+						\end{enumerate}
+						
+				\end{itemize}
+			
+		\end{itemize}
+		
+		\section{کلمات کلیدی \lr{funcall} در لیسپ}
+			
+			\begin{itemize}
+				
+				\item[الف.] تابع \lr{mystery} شبیه به کدام تابع در \lr{ML} است؟
+				
+					تابع \lr{text} شبیه به تابع \lr{map} در زبان \lr{ML} است.
+					
+					\begin{itemize}
+						
+						\item در \lr{ML}، \lr{map} یک تابع مرتبه بالاتر (\lr{higher-order function}) است که یک تابع را به تمام عناصر لیست اعمال کرده و یک لیست جدید از نتایج ایجاد می‌کند.
+						
+						\item در \lr{mystery} نیز همین کار انجام می‌شود:
+						
+						\begin{itemize}
+							
+							\item هر عنصر از لیست (با استفاده از \lr{car} و \lr{cdr}) پردازش می‌شود.
+							
+							\item نتیجه تابع اعمال‌شده به عنصر، در یک لیست جدید جمع‌آوری می‌شود (با استفاده از \lr{cons}).
+							
+						\end{itemize}
+						
+					\end{itemize}
+				
+				\item[ب.] بازنویسی \lr{mystery} با استفاده از \lr{apply} به‌جای \lr{funcall}
+				
+				برای بازنویسی تابع \lr{mystery} با استفاده از \lr{apply} به‌جای \lr{funcall}، می‌توان به‌صورت زیر عمل کرد:
+				
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Q3 B}}]
+(defun mystery (f x)
+(cond
+((consp x) (cons (apply f (list (car x)))  ;; به جای funcall از apply استفاده می‌شود
+(mystery f (cdr x))))
+(T nil)))
+
+						\end{lstlisting}
+					\end{latin}
+					
+					توضیح تغییرات:
+					\begin{enumerate}
+						
+						\item در \lr{funcall f (car x)}، تابع \lr{f} مستقیماً با آرگومان (\lr{car x}) فراخوانی می‌شد.
+						
+						\item برای استفاده از \lr{apply}، نیاز است که آرگومان‌ها به‌صورت لیست ارائه شوند. بنابراین \lr{(list (car x))} ساخته می‌شود و به \lr{apply} داده می‌شود.
+						
+						\item \lr{apply} تابع \lr{f} را به همراه لیست آرگومان‌ها اجرا می‌کند.
+						
+					\end{enumerate}
+					
+					نکته: رفتار کد همچنان مشابه کد اصلی خواهد بود، با این تفاوت که از \lr{apply} به‌جای \lr{funcall} استفاده شده است.
+		
+			\end{itemize}
+			
+	\section{صریح‌سازی پرانتزها در عبارات $\lambda$}
+	
+		در حساب $\lambda$، پرانتزها برای تعیین ترتیب اعمال بسیار مهم هستند. ترتیب کلی به این شکل است:
+		
+		\begin{enumerate}
+			
+			\item چپ‌گرایی در کاربرد توابع
+			
+			\item اولویت بالاتر برای تعریف $\lambda$ در مقایسه با کاربرد تابع
+			
+		\end{enumerate}
+		
+		با این اصول، عبارات داده‌شده به‌طور صریح بازنویسی می‌شوند.
+		
+		\begin{enumerate}
+			
+			\item \lr{$\lambda$x.xz $\lambda$y.xy} \par
+			
+			گام به گام:
+			
+			\begin{itemize}
+				
+				\item ابتدا تعریف \lr{$\lambda$x} و کاربرد آن بر \lr{$\lambda$y.xy}
+				
+				\item در اینجا \lr{$\lambda$x.xz} یک تابع است که بر \lr{($\lambda$y.xy)} اعمال می‌شود.
+				
+			\end{itemize}
+			
+			بازنویسی کامل با پرانتزهای صریح:
+			\[
+			\left( \left( \lambda x . (x \, z) \right) \, \left( \lambda y . (x \, y) \right) \right)
+			\]
+			
+			\item \lr{($\lambda$x.xz) $\lambda$y.w $\lambda$w.wyzx} \par
+			
+			گام به گام:
+			
+			\begin{itemize}
+				
+				\item ابتدا \lr{$\lambda$x.xz} بر \lr{($\lambda$y.w $\lambda$w.wyzx)} اعمال می‌شود.
+				
+				\item درون \lr{($\lambda$y.w $\lambda$w.wyzx)}، ابتدا \lr{$\lambda$w.wyzx} تعریف‌شده و سپس \lr{$\lambda$y} آن را به عنوان خروجی \lr{w} معرفی می‌کند.
+				
+			\end{itemize}
+			
+			بازنویسی کامل با پرانتزهای صریح:
+			
+			\[
+			\left( \left( \lambda x . (x \, z) \right) \, \left( \lambda y . \left( w \, \left( \lambda w . \left( \left( \left( w \, y \right) z \right) x \right) \right) \right) \right) \right)
+			\]
+			
+			\item \lr{$\lambda$x.xy $\lambda$x.yx} \par
+			
+			گام به گام:
+			
+			\begin{itemize}
+				
+				\item \lr{$\lambda$x.xy} تابعی است که بر \lr{($\lambda$x.yx)} اعمال می‌شود.
+				
+				\item این تابع دوم \lr{($\lambda$x.yx)} نیز خودش یک تعریف \lr{$\lambda$} است.
+				
+			\end{itemize}
+			
+			بازنویسی کامل با پرانتزهای صریح:
+			
+			\[
+			((\lambda x.(xy))(\lambda x.(yx)))
+			\]
+			
+			
+			
+		\end{enumerate}
+		
+	\section{روند کاهش $\beta$}
+	
+		کاهش $\beta$ در حساب $\lambda$ به معنای جای‌گذاری آرگومان‌ها در بدنه توابع و ساده‌سازی عبارات تا حد امکان است. این فرایند به صورت بازگشتی انجام می‌شود.
+		
+		\begin{enumerate}
+			
+			\item \lr{($\lambda$z.z)($\lambda$y.yy)($\lambda$x.xa)}
+			
+			\begin{itemize}
+				
+				\item {\large گام اول}: تابع \lr{($\lambda$z.z)} آرگومان اول خود را برمی‌گرداند.
+				
+				\[
+				(\lambda z.z)(\lambda y.yy) \rightarrow (\lambda y.yy)
+				\]
+				
+				\item {\large گام دوم}: عبارت به شکل زیر ساده می‌شود
+				
+				\[
+				(\lambda y.yy)(\lambda x.xa)
+				\]
+				
+				\item {\large گام سوم}: جای‌گذاری \lr{($\lambda$x.xa)} به‌جای y
+				
+				\[
+				(\lambda y.yy)(\lambda x.xa) \rightarrow (\lambda x.xa)(\lambda x.xa)
+				\]
+				
+				\item {\large نتیجه نهایی}:
+				
+				\[
+				(\lambda x.xa)(\lambda x.xa)
+				\]
+				
+
+				
+			\end{itemize}
+			
+			عبارت دیگر قابل کاهش نیست زیرا تابع دیگر اعمال نمی‌شود.
+			
+			
+			\item \lr{($\lambda$x.xx)($\lambda$y.yx)z}
+			
+			\begin{itemize}
+				
+				\item {\large گام اول}: ابتدا \lr{($\lambda$x.xx)} با آرگومان \lr{($\lambda$y.yx)} فراخوانی می‌شود. \lr{($\lambda$y.yx)} جای‌گذاری می‌شود:
+				
+				\[
+				(\lambda x.xx)(\lambda y.yx) \rightarrow (\lambda y.yx)(\lambda y.yx)
+				\]
+				
+				\item {\large گام دوم}: اکنون \lr{($\lambda$y.yx)} روی خودش اعمال می‌شود:
+				
+				\[
+				(\lambda y.yx)(\lambda y.yx)
+				\]
+				
+				\item {\large گام سوم}: تابع \lr{($\lambda$y.yx)} با آرگومان \lr{($\lambda$y.yx)} فراخوانی می‌شود. \lr{($\lambda$y.yx)} جای‌گذاری می‌شود:
+				
+				\[
+				(\lambda y.yx)(\lambda y.yx) \rightarrow ((\lambda y.yx)x)
+				\]
+				
+				\item {\large نتیجه نهایی}:
+				
+				\[
+				((\lambda y.yx)x)
+				\]
+				
+			\end{itemize}
+			
+			\item \lr{((($\lambda$x.$\lambda$y.(xy))($\lambda$y.y))w)}
+						
+			\begin{itemize}
+				
+				\item {\large گام اول}: ابتدا \lr{($\lambda$x.$\lambda$y.(xy))} با آرگومان \lr{($\lambda$y.y)} فراخوانی می‌شود. \lr{($\lambda$y.y)} جای‌گذاری می‌شود
+				
+				\[
+				(\lambda x.\lambda y.(xy))(\lambda y.y) \rightarrow \lambda y((\lambda y.y)y)
+				\]
+				
+				\item {\large گام دوم}: حالا \lr{($\lambda$y.(($\lambda$y.y)y))} با آرگومان \lr{w} فراخوانی می‌شود. \lr{y} به \lr{w} جای‌گذاری می‌شود
+				
+				\[
+				(\lambda y((\lambda y.y)y))w \rightarrow ((\lambda y.y)w)
+				\]
+				
+				\item {\large گام سوم}: تابع \lr{($\lambda$y.y)} روی \lr{w} اعمال می‌شود
+				
+				\[
+				(\lambda y.y)w \rightarrow w
+				\]
+				
+				\item {\large نتیجه نهایی}:
+				
+				\[
+				w
+				\]
+				
+			\end{itemize}
+			
+		\end{enumerate}
+		
+	\section{اثبات عبارات با استفاده از کدگذاری حساب $\lambda$}
+	
+		\begin{itemize}
+			
+			\item[الف.] \lr{not (not true) = true} \par
+			تعاریف داده‌شده:
+			\begin{itemize}
+				
+				\item \lr{not = $\lambda$x.((x false)true)}
+				 
+				\item \lr{true = $\lambda$x.$\lambda$y.x}
+				
+				\item \lr{false = $\lambda$x.$\lambda$y.y}
+				
+			\end{itemize}
+			
+			\begin{itemize}
+				
+				\item[گام 1:] محاسبه \lr{not true}
+				
+					\begin{itemize}
+						
+						\item تابع \lr{not} روی \lr{true} اعمال می‌شود:
+						
+						\[
+						not true=(\lambda x.((x false)true))true
+						\]
+						
+						\item حالا \lr{x} را با \lr{true} جای‌گذاری می‌کنیم:
+						
+						\[
+						(\lambda x.((x false)true))true \rightarrow ((true false)true)
+						\]
+						
+						\item تعریف \lr{true=$\lambda$x.$\lambda$y.x} را جای‌گذاری می‌کنیم:
+						
+						\[
+						((true false)true)=((\lambda x.\lambda y.x)false)true
+						\]
+						
+						\item حالا \lr{x} را با \lr{false} جای‌گذاری می‌کنیم:
+						
+						\[
+						((\lambda x.\lambda y.x)false)true \rightarrow (\lambda y.false)true
+						\]
+						
+						\item تابع \lr{($\lambda$.false)} را روی \lr{true} اعمال می‌کنیم:
+						
+						\[
+						(\lambda y.false)true \rightarrow false
+						\]
+						
+						\item نتیجه:
+						
+						\[
+						not true=false
+						\]
+						
+					\end{itemize}
+				
+				
+				\item[گام 2:] محاسبه \lr{not (not true)}
+				
+					\begin{itemize}
+						
+						\item حالا \lr{not} را روی \lr{not true} که \lr{false} است اعمال می‌کنیم:
+						
+						\[
+						not (not true)=(\lambda x.((x false)true))false
+						\]
+						
+						\item \lr{x} را با \lr{false} جای‌گذاری می‌کنیم:
+						
+						\[
+						(\lambda x.((x false)true))false \rightarrow ((false false)true)
+						\]
+						
+						\item تعریف \lr{false=$\lambda$x.$\lambda$y.y} را جای‌گذاری می‌کنیم:
+						
+						\[
+						((false false)true)=((\lambda x.\lambda y.y)false)true
+						\]
+						
+						\item حالا \lr{x} را با \lr{false} جای‌گذاری می‌کنیم:
+						
+						\[
+						((\lambda x.\lambda y.y)false)true \rightarrow (\lambda y.y)true
+						\]
+						
+						\item تابع \lr{($\lambda$y.y)} را روی \lr{true} اعمال می‌کنیم:
+						
+						\[
+						(\lambda y.y)true \rightarrow true
+						\]
+						
+						\item نتیجه نهایی:
+						
+						\[
+						not (not true)=true
+						\]
+						
+					\end{itemize}
+				
+			\end{itemize}
+			
+			\item[ب.] \lr{if false then x else y = y}
+			
+			تعاریف داده‌شده:
+			
+			\begin{itemize}
+				
+				\item \lr{if a then b else c = a b c}
+				
+				\item \lr{true = $\lambda$x.$\lambda$y.x}
+				
+				\item \lr{false = $\lambda$x.$\lambda$y.y}
+				
+			\end{itemize}
+			
+			\begin{itemize}
+				
+				\item[گام 1:] جای‌گذاری در \lr{if false then x else y}
+					
+					تعریف \lr{if a then b else c} را استفاده می‌کنیم که برابر با \lr{abc} است. حال \lr{a=false}، \lr{b=x} و \lr{c=y}:
+					
+					if false then x else y=false x y
+
+				\item[گام 2:] محاسبه \lr{false x y}
+				
+				\begin{itemize}
+					
+					\item تعریف \lr{false=$\lambda$x.$\lambda$y.y} را جای‌گذاری می‌کنیم:
+					
+					\[
+					false x y=(\lambda x.\lambda y.y)xy
+					\]
+					
+					\item ابتدا \lr{x} را در \lr{$\lambda$x.$\lambda$y.y} جای‌گذاری می‌کنیم:
+					
+					\[
+					(\lambda x.\lambda y.y)x \rightarrow \lambda y.y
+					\]
+					
+					\item حالا \lr{$\lambda$y.y} را روی \lr{y} اعمال می‌کنیم:
+					
+					\[
+					(\lambda y.y)y \rightarrow y
+					\]
+					
+					\item نتیجه نهایی:
+					
+					\[
+					if false then x else y=y
+					\]
+					
+					
+				\end{itemize}
+				
+			\end{itemize}
+				
+		\end{itemize}
+		
+\end{document}
