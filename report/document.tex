@@ -1745,7 +1745,1072 @@ arr[1,1,1]  # 1
 					\item بازیافت حافظه به جلوگیری از مشکلات نشتی حافظه کمک می‌کند، و این ویژگی \lr{R} را برای تحلیل داده‌های پیچیده ایده‌آل می‌کند.
 					
 				\end{itemize}
+				
+	\chapter{برنامه نویسی تابعی}
 	
+		زبان R از برنامه‌نویسی تابعی (\lr{Functional Programming}) به طور کامل پشتیبانی می‌کند. \lr{R} طراحی شده است تا با داده‌ها به صورت برداری (\lr{vectorized}) کار کند و همین امر آن را برای عملیات تابعی بسیار مناسب می‌سازد. در ادامه به جزئیات سؤالات شما پاسخ داده می‌شود.
+		
+		\section{سازوکارهای برنامه‌نویسی تابعی در \lr{R}}
+			
+			\lr{R}
+			شامل ویژگی‌ها و توابع متعددی برای پشتیبانی از برنامه‌نویسی تابعی است:
+			
+			\begin{enumerate}
+				
+				\item {\large توابع لامبدا (\lr{Lambda Functions})} \par
+				در R، می‌توانید به‌صورت مستقیم توابع ناشناس (inline functions) تعریف کنید.
+				مثال:
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Lambda Functions}}] 
+squared <- function(x) x^2
+result <- lapply(1:5, function(x) x^2)  # Using a lambda function
+print(result)
+		
+						\end{lstlisting}
+					\end{latin}
+				
+				
+				\item {\large ارسال تابع به تابع} \par
+				توابع در \lr{R} اشیاء درجه اول هستند، یعنی می‌توان آن‌ها را به عنوان آرگومان به دیگر توابع ارسال کرد.
+				مثال:
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Passing function to another function}}] 
+apply_function <- function(f, x) {
+	f(x)  # Execute the input function
+}
+apply_function(sin, pi / 2)  # Passing sin function to another function
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\item {\large بازگرداندن تابع از تابع} \par
+				\lr{R}
+				 اجازه می‌دهد که یک تابع از درون تابع دیگر بازگردانده شود.
+				مثال:
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Return a function into function}}] 
+generate_multiplier <- function(n) {
+	function(x) x * n  # Return a new function
+}
+double <- generate_multiplier(2)
+double(5)  # result: 10
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\item {\large توابع نگاشت (\lr{Map})، فیلتر (\lr{Filter}) و کاهش (\lr{Reduce})} \par
+				
+					\begin{itemize}
+						
+						\item {\large \lr{map}}:
+						توابعی مانند \lr{lapply} و \lr{sapply} برای اعمال یک تابع بر هر عنصر یک لیست یا بردار استفاده می‌شوند.
+						
+						\item {\large \lr{filter}}:
+						تابع \lr{Filter} برای انتخاب عناصر مطابق با شرط استفاده می‌شود.
+						
+						\item {\large \lr{reduce}}:
+						تابع \lr{Reduce} برای کاهش یک بردار به یک مقدار استفاده می‌شود.
+						
+					\end{itemize}
+					
+					مثال:
+					
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Map - Filter - Reduce}}] 
+# Map
+squared <- sapply(1:5, function(x) x^2)
+
+# Filter
+filtered <- Filter(function(x) x > 2, 1:5)
+
+# Reduce
+sum_result <- Reduce(`+`, 1:5)
+
+						\end{lstlisting}
+					\end{latin}
+				
+			\end{enumerate}
+			
+		
+		
+		\section{پیاده‌سازی توابع برنامه‌نویسی تابعی در \lr{R}}
+		
+			این توابع با استفاده از مفاهیم بردارسازی (\lr{Vectorization}) و ارث‌بری از توابع پایه‌ای (\lr{Base functions}) در \lr{R} اجرا می‌شوند. \lr{R} در پشت صحنه، این عملیات را بهینه می‌کند، مثلاً با استفاده از کدهای نوشته‌شده در زبان \lr{C} برای عملکرد بهتر.
+		
+		
+		\section{تأثیر توابع نگاشت، فیلتر و کاهش بر کارایی برنامه}
+		
+		استفاده از توابع تابعی (مانند \lr{sapply} یا \lr{Reduce}) معمولاً باعث افزایش کارایی می‌شود، زیرا این توابع در سطح پایین بهینه شده‌اند.
+		این روش‌ها معمولاً کد خواناتر و کوتاه‌تری ایجاد می‌کنند که نگهداری آن‌ها آسان‌تر است.
+		با این حال، برای مجموعه داده‌های کوچک ممکن است اختلاف کارایی قابل ملاحظه‌ای وجود نداشته باشد.
+		
+			
+		\section{مقایسه با برنامه‌نویسی رویه‌ای (\lr{Procedural Programming})}
+			
+			برنامه‌نویسی تابعی می‌تواند از نظر کارایی و سادگی کد برتری داشته باشد، اما این به اندازه داده‌ها و کاربرد بستگی دارد.
+			مثال:
+		
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Map - Filter - Reduce}}] 
+# Functional (Using Reduce)
+system.time({
+	result_func <- Reduce(`+`, 1:1e6)
+})
+
+# Procedural (Using Loop)
+system.time({
+	result_loop <- 0
+	for (i in 1:1e6) {
+		result_loop <- result_loop + i
+	}
+})
+
+				\end{lstlisting}
+			\end{latin}
+			
+			نتایج نشان می‌دهد که نسخه تابعی معمولاً سریع‌تر یا مشابه است، زیرا از بهینه‌سازی داخلی \lr{R} بهره می‌برد.
+			
+		
+		\section{جمع‌بندی}
+		
+			\lr{R}
+			به طور گسترده برنامه‌نویسی تابعی را پشتیبانی می‌کند و این روش می‌تواند به سادگی کد و گاهی افزایش کارایی منجر شود. با این حال، برای تصمیم‌گیری درباره بهترین روش، حجم داده‌ها و کاربرد خاص پروژه را باید در نظر گرفت.
+			
+			
+	\chapter{برنامه نویسی رویه‌ای}
+	
+		زبان \lr{R} از برنامه‌نویسی رویه‌ای (\lr{Procedural Programming}) به خوبی پشتیبانی می‌کند. در این سبک برنامه‌نویسی، کد به صورت ترتیبی و از طریق توابع و زیربرنامه‌ها (\lr{subroutines}) سازماندهی می‌شود. در ادامه به جزئیات سؤالات شما در مورد سازوکارهای برنامه‌نویسی رویه‌ای در \lr{R} پاسخ داده می‌شود:
+		
+		\section{زیربرنامه‌ها (\lr{Subroutines})}
+			
+			در \lr{R}، زیربرنامه‌ها همان توابع هستند که می‌توانند کد تکراری یا پیچیده را درون خود مدیریت کنند. این توابع با استفاده از کلمه کلیدی \lr{function} تعریف می‌شوند.
+			مثال:
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Subroutines}}] 
+calculate_area <- function(length, width) {
+	return(length * width)  # return value
+}
+
+area <- calculate_area(5, 3)  # Subroutine call
+print(area)  # output: 15
+
+				\end{lstlisting}
+			\end{latin}
+		
+		\section{روش‌های ارسال متغیرها به توابع}
+		
+			در \lr{R}، متغیرها می‌توانند به دو روش به توابع ارسال شوند:
+			
+			\begin{enumerate}
+				
+				\item {\large ارسال بر اساس مقدار (\lr{Pass by Value})} \par
+				
+				\lr{R}
+					به طور پیش‌فرض، متغیرها را به صورت "بر اساس مقدار" به توابع ارسال می‌کند. این بدان معناست که مقدار کپی می‌شود و تغییرات داخل تابع بر متغیر اصلی تأثیر نمی‌گذارد.
+					مثال:
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Pass by Value}}] 
+modify_value <- function(x) {
+	x <- x + 1
+	return(x)
+}
+
+a <- 10
+result <- modify_value(a)
+print(a)  # Original value does not change (output: 10)
+
+						\end{lstlisting}
+					\end{latin}
+				
+				\item {\large ارسال بر اساس مرجع (\lr{Pass by Reference})} \par
+				
+				برای ارسال متغیرها بر اساس مرجع، از اشیاء خاصی مانند لیست‌ها (\lr{lists}) یا محیط‌ها (\lr{environments}) استفاده می‌شود.
+				مثال:
+				
+					\begin{latin}
+						\begin{lstlisting}[caption={\lr{Pass by Reference}}] 
+modify_reference <- function(env) {
+	env$a <- env$a + 1  # Changing the value in the environment
+}
+
+e <- new.env()
+e$a <- 10
+modify_reference(e)
+print(e$a)  # value changes (output: 11)
+
+						\end{lstlisting}
+					\end{latin}
+				
+			\end{enumerate}
+		
+		\section{برنامه‌نویسی عمومی (\lr{Generic Programming})}
+		
+			\lr{R}
+			از توابع عمومی پشتیبانی می‌کند، به این معنا که توابع می‌توانند با انواع مختلف داده‌ها (اعداد، رشته‌ها، بردارها، و ...) کار کنند. \lr{R} به صورت پویا نوع داده را تشخیص می‌دهد و نیازی به تعریف نوع ورودی وجود ندارد.
+			مثال:
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Generic Programming}}] 
+print_value <- function(x) {
+	print(x)  # The function works for any data type
+}
+
+print_value(42)       # integer
+print_value("Hello")  # string
+print_value(TRUE)     # logical
+
+				\end{lstlisting}
+			\end{latin}
+			
+			علاوه بر این، \lr{R} از سیستم‌های عمومی مانند \lr{S3}، \lr{S4} و \lr{Reference Classes} برای مدیریت رفتار توابع برای انواع مختلف داده‌ها استفاده می‌کند.
+			مثال از روش \lr{S3}:
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{S3}}] 
+print.custom <- function(x) {
+	cat("Custom value:", x, "\n")
+}
+
+x <- 100
+class(x) <- "custom"
+print(x)  # Generic function call based on data type
+
+				\end{lstlisting}
+			\end{latin}
+			
+			
+		\section{سایر ویژگی‌های برنامه‌نویسی رویه‌ای}
+		
+			\begin{itemize}
+				
+				\item {\large شرط‌ها و حلقه‌ها} \par
+				
+				\lr{R}
+				شامل ساختارهای شرطی (\lr{if}, \lr{else}) و حلقه‌های تکرار (\lr{for}, \lr{while}, \lr{repeat}) برای اجرای منطقی و ترتیبی کد است.
+				
+				 \begin{latin}
+					\begin{lstlisting}[caption={\lr{for}}] 
+for (i in 1:5) {
+	print(i)
+}
+
+					\end{lstlisting}
+				\end{latin}
+				
+				\item {\large توابع پیش‌فرض (\lr{Default Arguments})} \par
+				در \lr{R} می‌توان آرگومان‌های پیش‌فرض برای توابع تعریف کرد.
+				مثال:
+				
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{Default Arguments}}] 
+greet <- function(name = "World") {
+	cat("Hello,", name, "!\n")
+}
+
+greet()         # output: Hello, World!
+greet("Alice")  # output: Hello, Alice!
+
+					\end{lstlisting}
+				\end{latin}
+				
+				
+				\item {\large بازه‌های متغیر (\lr{Variable Scope})} \par
+				
+				متغیرها در \lr{R} دارای \lr{Local Scope} یا \lr{Global Scope} هستند.
+				مثال:
+				
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{Variable Scope}}] 
+x <- 10  # متغیر جهانی
+scope_example <- function() {
+	x <- 5  # متغیر محلی
+	return(x)
+}
+print(scope_example())  # output: 5
+print(x)               # output: 10
+
+					\end{lstlisting}
+				\end{latin}
+				
+			\end{itemize}
+		
+		\section{مقایسه برنامه‌نویسی رویه‌ای با تابعی}
+		
+			\begin{itemize}
+				
+				\item برنامه‌نویسی رویه‌ای برای وظایف ترتیبی و ساده‌تر مناسب است.
+				
+				\item برنامه‌نویسی تابعی برای عملیات پیچیده‌تر و داده‌های بزرگ کارایی بیشتری دارد.
+				
+				\item در بسیاری از موارد، برنامه‌نویسی تابعی در \lr{R} به دلیل استفاده از بهینه‌سازی داخلی و بردارها سریع‌تر از حلقه‌های تکرار عمل می‌کند.
+				
+			\end{itemize}
+		
+		\section{جمع‌بندی}
+		
+			\lr{R}
+			یک زبان انعطاف‌پذیر است که برنامه‌نویسی رویه‌ای را به طور کامل پشتیبانی می‌کند. این زبان ابزارهایی مانند توابع، روش‌های ارسال متغیر، توابع عمومی، و ساختارهای کنترلی را فراهم می‌کند که به توسعه کدهای خوانا و قابل نگهداری کمک می‌کنند.
+			
+	\chapter{برنامه‌نویسی شیءگرا}
+	
+		 زبان \lr{R} از برنامه‌نویسی شیءگرا (\lr{Object-Oriented Programming} یا \lr{OOP}) پشتیبانی می‌کند. \lr{R} از چندین سیستم برای مدیریت برنامه‌نویسی شیءگرا استفاده می‌کند، از جمله \lr{S3}، \lr{S4}، \lr{Reference Classes} ، و \lr{R6}. این سیستم‌ها هر کدام دارای ویژگی‌ها و سازوکارهای خاصی هستند که در ادامه توضیح داده می‌شوند.
+		 
+		 \section{ساختارهای موجود برای برنامه‌نویسی شیءگرا}
+		 
+		 	\begin{itemize}
+		 		
+		 		\item {\large سیستم \lr{S3}} \par
+		 		
+		 		\lr{S3}
+		 		یک سیستم ساده و انعطاف‌پذیر برای شیءگرایی در \lr{R} است.
+		 		
+		 		\begin{itemize}
+		 			
+		 			\item 
+		 			\lr{S3}
+		 			از کلاس‌های غیررسمی و توابع عمومی (\lr{Generic Functions}) استفاده می‌کند.
+		 			
+		 			\item
+		 			ساختار یک شیء \lr{S3} معمولاً لیستی است که با یک کلاس مشخص شده است.
+		 			
+		 		\end{itemize}
+		 		
+		 		مثال:
+		 		
+		 		\begin{latin}
+		 			\begin{lstlisting}[caption={\lr{S3 OOP}}] 
+# Defining an S3 object
+person <- list(name = "Ali", age = 25)
+class(person) <- "Person"
+
+# Define a public function
+print.Person <- function(x) {
+	cat("Name:", x$name, "\nAge:", x$age, "\n")
+}
+
+print(person)
+
+		 			\end{lstlisting}
+		 		\end{latin}
+		 		
+		 		
+		 		\item {\large سیستم \lr{S4}} \par
+		 		\lr{S4}
+		 		سیستم رسمی‌تر و قدرتمندتری است که از تعریف دقیق کلاس‌ها و متدها پشتیبانی می‌کند.
+		 		
+		 		\begin{itemize}
+		 			
+		 			\item نیاز به تعریف صریح کلاس‌ها با استفاده از \lr{setClass}.
+		 			
+		 			\item متدها با استفاده از \lr{setGeneric} و \lr{setMethod} تعریف می‌شوند.
+		 			
+		 		\end{itemize}
+		 		
+		 		مثال:
+		 		
+		 		\begin{latin}
+		 			\begin{lstlisting}[caption={\lr{S3 OOP}}] 
+# Defining a class S4
+setClass("Person",
+slots = list(name = "character", age = "numeric"))
+
+# Create an object of class S4
+person <- new("Person", name = "Ali", age = 25)
+
+# Access to slots
+print(person@name)
+
+		 			\end{lstlisting}
+		 		\end{latin}
+		 		
+		 		\item {\large \lr{Reference Classes}} \par
+		 		
+		 		این سیستم از \lr{OOP} کلاسیک (مشابه زبان‌هایی مانند \lr{Java} یا \lr{Python}) پشتیبانی می‌کند.
+		 		
+		 		\begin{itemize}
+		 			
+		 			\item امکان تعریف متغیرهای خصوصی و متدها.
+		 			
+		 			\item اشیاء به صورت ارجاعی مدیریت می‌شوند (یعنی تغییرات در متغیرها روی شیء اصلی اعمال می‌شوند).
+		 			
+		 		\end{itemize}
+		 		
+		 		مثال:
+		 		
+		 		\begin{latin}
+		 			\begin{lstlisting}[caption={\lr{Reference Classes}}] 
+Person <- setRefClass("Person",
+fields = list(name = "character", age = "numeric"),
+methods = list(
+greet = function() {
+	cat("Hello, my name is", name, "and I am", age, "years old.\n")
+}
+))
+
+# Create object
+person <- Person$new(name = "Ali", age = 25)
+person$greet()
+
+		 			\end{lstlisting}
+		 		\end{latin}
+		 		
+		 		\item {\large سیستم \lr{R6}} \par
+		 		
+		 		\lr{R6}
+		 		یک سیستم مدرن‌تر است که برای برنامه‌نویسی شیءگرا در \lr{R} طراحی شده است.
+		 				 		
+		 		\begin{itemize}
+		 			
+		 			\item متدهای \lr{R6} به طور مستقیم به اشیاء متصل هستند.
+		 			
+		 			\item برخلاف \lr{S3} و \lr{S4}، نیازی به تابع عمومی نیست.
+		 			
+		 		\end{itemize}
+		 		
+		 		مثال:
+		 		
+		 		\begin{latin}
+		 			\begin{lstlisting}[caption={\lr{S6 OOP}}] 
+library(R6)
+
+Person <- R6Class("Person",
+public = list(
+name = NULL,
+age = NULL,
+initialize = function(name, age) {
+	self$name <- name
+	self$age <- age
+},
+greet = function() {
+	cat("Hello, my name is", self$name, "and I am", self$age, "years old.\n")
+}
+))
+
+# Create object
+person <- Person$new(name = "Ali", age = 25)
+person$greet()
+
+		 			\end{lstlisting}
+		 		\end{latin}
+		 		
+		 		
+		 	\end{itemize}
+		 
+		 \section{چندریختی (Polymorphism)}
+		 	
+		 	\lr{R}
+		 	از چندریختی به خوبی پشتیبانی می‌کند، به ویژه در سیستم‌های \lr{S3} و \lr{S4}.
+		 	
+			 	در \lr{S3} و \lr{S4}، توابع عمومی مانند \lr{print} بر اساس کلاس شیء رفتار متفاوتی از خود نشان می‌دهند.
+			 	
+			 	\begin{latin}
+			 		\begin{lstlisting}[caption={\lr{Polymorphism}}] 
+# Definition of two different classes
+setClass("Rectangle", slots = list(length = "numeric", width = "numeric"))
+setClass("Circle", slots = list(radius = "numeric"))
+
+# General method definition for area calculation
+setGeneric("area", function(obj) standardGeneric("area"))
+setMethod("area", "Rectangle", function(obj) obj@length * obj@width)
+setMethod("area", "Circle", function(obj) pi * obj@radius^2)
+
+# use
+rect <- new("Rectangle", length = 5, width = 3)
+circle <- new("Circle", radius = 2)
+area(rect)    # output: 15
+area(circle)  # output: 12.566
+
+			 		\end{lstlisting}
+			 	\end{latin}
+		 
+		 \section{وراثت (Inheritance)}
+		 
+		 	\begin{itemize}
+		 		
+		 		\item در \lr{S3}، وراثت از طریق لیست کلاس‌ها (کلاس والد) انجام می‌شود.
+		 		
+		 		\item در \lr{S4}، وراثت به طور رسمی با استفاده از \lr{contains} تعریف می‌شود.
+		 		
+		 		\item در \lr{Reference Classes} و \lr{R6}، وراثت به صورت سلسله‌مراتبی تعریف می‌شود.
+		 		
+		 	\end{itemize}
+		 	
+		 	مثال در \lr{S4}:
+		 
+		 	\begin{latin}
+		 		\begin{lstlisting}[caption={\lr{Inheritance}}] 
+setClass("Shape", slots = list(color = "character"))
+setClass("Rectangle", contains = "Shape", slots = list(length = "numeric", width = "numeric"))
+
+# Create a rectangle
+rect <- new("Rectangle", color = "blue", length = 5, width = 3)
+rect@color  # Inherit the Color property from the Shape class
+
+		 		\end{lstlisting}
+		 	\end{latin}
+		 
+		 \section{مدیریت اشیاء در حافظه}
+		 
+		 	\begin{itemize}
+		 		
+		 		\item در سیستم‌های \lr{S3} و \lr{S4}، اشیاء به صورت کپی مدیریت می‌شوند، بنابراین تغییرات بر روی یک شیء معمولاً به نسخه کپی اعمال می‌شود.
+		 		
+		 		\item در سیستم‌های \lr{Reference Classes} و \lr{R6}، اشیاء به صورت ارجاعی (\lr{Reference}) مدیریت می‌شوند، یعنی تغییرات مستقیماً روی شیء اصلی اعمال می‌شود.
+		 		
+		 	\end{itemize}
+		 
+		 \section{جمع‌بندی}
+		 
+		 	زبان \lr{R} از برنامه‌نویسی شیءگرا با چندین سیستم (\lr{S3}، \lr{S4}، \lr{Reference Classes}، و \lr{R6}) پشتیبانی می‌کند.
+		 	
+		 	\begin{itemize}
+		 		
+		 		\item \lr{S3} برای کاربردهای ساده و انعطاف‌پذیر مناسب است.
+		 		
+		 		\item \lr{S4} برای مواردی که به دقت بیشتر در تعریف کلاس‌ها و متدها نیاز است.
+		 		
+		 		\item \lr{Reference Classes} و \lr{R6} برای برنامه‌های پیچیده‌تر و نیازمند مدیریت دقیق‌تر طراحی شده‌اند.
+		 		
+		 	\end{itemize}
+		 	
+		 	این ویژگی‌ها \lr{R} را به زبانی قدرتمند برای توسعه پروژه‌های شیءگرا تبدیل می‌کند.
+		 	
+	
+	\chapter{برنامه‌نویسی همروند}
+	
+		زبان \lr{R} از برنامه‌نویسی همروند (\lr{Concurrent Programming}) پشتیبانی می‌کند. این قابلیت در \lr{R} از طریق بسته‌های مختلف و سازوکارهای گوناگونی مانند رشته‌ها (\lr{Threads})، ارسال پیام \lr{(Message Passing}، قفل‌ها (\lr{Locks})، و سمافورها (\lr{Semaphores}) پیاده‌سازی شده است. در ادامه به توضیحات مربوط به این سازوکارها پرداخته می‌شود.
+		
+		\section{رشته‌ها (\lr{Threads})}
+		
+			\lr{R}
+			به صورت پیش‌فرض از رشته‌های چندگانه (\lr{Multithreading}) پشتیبانی نمی‌کند، زیرا \lr{R} برای اجرای تک‌رشته‌ای (\lr{Single Threaded}) طراحی شده است. با این حال، برای کارهای موازی و همروند از بسته‌های خارجی مانند \lr{parallel} و \lr{future} استفاده می‌شود.
+		
+		مثال: \lr{Multicore Processing}
+		\begin{latin}
+			\begin{lstlisting}[caption={\lr{Multicore Processing}}] 
+library(parallel)
+
+# Define a function to process
+task <- function(x) {
+	Sys.sleep(2)  # Simulation of a long operation
+	return(x^2)
+}
+
+# Concurrent execution using processes
+result <- mclapply(1:4, task, mc.cores = 4)
+print(result)
+
+			\end{lstlisting}
+		\end{latin}
+		
+		\section{قفل‌ها (\lr{Locks}) و سمافورها (\lr{Semaphores})}
+		
+			برای مدیریت همزمانی و جلوگیری از شرایط رقابتی (\lr{Race Conditions})، می‌توان از قفل‌ها یا سمافورها استفاده کرد. در \lr{R} این قابلیت از طریق بسته‌هایی مانند \lr{parallel} و \lr{future} قابل دسترسی است.
+			
+			مثال: استفاده از قفل‌ها با \lr{parallel}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Locks in parallel}}] 
+library(parallel)
+
+# Create a lock
+lock <- makeCluster(1)  # ایجاد یک کلاستر برای مدیریت دسترسی
+clusterEvalQ(lock, { counter <- 0 })  # تعریف یک متغیر مشترک
+
+# Increase shared variable value in safe mode
+clusterExport(lock, "counter")
+clusterEvalQ(lock, { counter <- counter + 1 })
+stopCluster(lock)
+
+				\end{lstlisting}
+			\end{latin}
+		
+		\section{ارسال پیام (\lr{Message Passing})}
+		
+			\lr{R}
+			از مکانیزم ارسال پیام برای ارتباط بین پردازه‌ها پشتیبانی می‌کند. این قابلیت عمدتاً با بسته‌هایی مانند \lr{parallel} و \lr{future} فراهم می‌شود.
+			
+			مثال: ارسال پیام با استفاده از \lr{makeCluster}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Message Passing in makeCluster}}] 
+library(parallel)
+
+# Create a cluster
+cl <- makeCluster(2)
+
+# Send and receive data between nodes
+clusterExport(cl, "task")
+result <- parLapply(cl, 1:2, function(x) x * 2)
+print(result)
+
+# Stop the cluster
+stopCluster(cl)
+
+				\end{lstlisting}
+			\end{latin}
+		
+		\section{مدیریت همروندی با بسته‌های خاص}
+		
+			\begin{itemize}
+				
+				\item {\large بسته \lr{future}} \par
+				بسته \lr{future} یک رابط ساده برای همروندی و محاسبات موازی فراهم می‌کند و از چندین \lr{backend} (مانند \lr{Multicore} و \lr{Multisession}) پشتیبانی می‌کند.
+				
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{future package}}] 
+library(future)
+
+plan(multicore, workers = 4)  # Set for concurrent processing
+result <- future_lapply(1:4, function(x) x^2)
+print(result)
+
+					\end{lstlisting}
+				\end{latin}
+				
+				\item {\large بسته \lr{foreach}} \par
+				بسته \lr{foreach} برای اجرای حلقه‌های همروند استفاده می‌شود.
+			
+				\begin{latin}
+					\begin{lstlisting}[caption={\lr{foreach package}}] 
+library(foreach)
+library(doParallel)
+
+cl <- makeCluster(4)
+registerDoParallel(cl)
+
+# Execution of the parallel loop
+result <- foreach(i = 1:4, .combine = c) %dopar% {
+	i^2
+}
+print(result)
+
+stopCluster(cl)
+
+					\end{lstlisting}
+				\end{latin}
+				
+			\end{itemize}
+		
+		\section{مقایسه سمافورها و قفل‌ها در \lr{R}}
+		
+			\begin{itemize}
+				
+				\item {\large قفل‌ها (\lr{Locks})}:
+				برای کنترل دسترسی به منابع مشترک استفاده می‌شوند. بسته‌های \lr{parallel} و \lr{future} این قابلیت را فراهم می‌کنند.
+				
+				\item {\large سمافورها (\lr{Semaphores})}: 
+				به طور مستقیم در \lr{R} پشتیبانی نمی‌شوند، اما می‌توان از قفل‌ها برای پیاده‌سازی رفتار مشابه استفاده کرد.
+				
+			\end{itemize}
+		
+		\section{سایر سازوکارهای برنامه‌نویسی همروند}
+		
+			\begin{itemize}
+				
+				\item {\large اجرای غیرهمزمان (\lr{Asynchronous Execution})}:
+				از طریق بسته‌هایی مانند \lr{async} و \lr{future} امکان‌پذیر است.
+				
+				\item {\large مدیریت حافظه مشترک}:
+				\lr{R}
+				به صورت پیش‌فرض از حافظه مشترک (\lr{Shared Memory}) پشتیبانی نمی‌کند، اما بسته‌هایی مانند \lr{bigmemory} این قابلیت را فراهم می‌کنند.
+				
+			\end{itemize}
+		
+		\section{مثالی کامل از برنامه‌نویسی همروند در R}
+		
+			ترکیب اجرای همروند و قفل‌ها:
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Combination of concurrent execution and locks}}] 
+library(parallel)
+
+# Define a shared variable
+shared_counter <- 0
+
+# Create a lock to manage access
+cl <- makeCluster(2)
+
+clusterExport(cl, c("shared_counter"))
+clusterEvalQ(cl, {
+	library(parallel)
+	increment <- function(x) {
+		Sys.sleep(1)
+		x + 1
+	}
+})
+
+# Run concurrently
+result <- parLapply(cl, 1:4, function(x) increment(shared_counter))
+print(result)
+
+stopCluster(cl)
+
+				\end{lstlisting}
+			\end{latin}
+		
+		\section{جمع‌بندی}
+		
+			زبان \lr{R} از طریق بسته‌های داخلی و خارجی مانند \lr{parallel}، \lr{future} و \lr{foreach} از برنامه‌نویسی همروند پشتیبانی می‌کند. این ابزارها قابلیت‌هایی مانند قفل‌ها، ارسال پیام و مدیریت پردازش‌های موازی را فراهم می‌کنند. با این حال، برای پروژه‌های بسیار پیچیده، زبان‌هایی مانند \lr{Python} یا \lr{Java} ممکن است امکانات بیشتری برای مدیریت پیشرفته همروندی داشته باشند.
+			
+	\chapter{پیاده سازی چند الگوریتم معروف با \lr{R}}
+	
+		\section{جستجوی دودویی (\lr{Binary Search})}
+		
+		
+			\begin{itemize}
+				
+				\item {\large هدف}:
+				پیدا کردن موقعیت یک عنصر در یک آرایه مرتب‌شده.
+				
+				\item {\large روش کار}: \par
+				
+				\begin{itemize}
+					
+					\item ابتدا وسط آرایه را بررسی می‌کند.
+					
+					\item اگر مقدار وسط همان مقدار هدف باشد، موقعیت را برمی‌گرداند.
+					
+					\item اگر مقدار وسط کمتر از مقدار هدف باشد، جستجو را به نیمه‌ی راست ادامه می‌دهد.
+					
+					\item اگر مقدار وسط بیشتر باشد، جستجو در نیمه‌ی چپ انجام می‌شود.
+					
+				\end{itemize}
+				
+				\item {\large پیچیدگی زمانی}:
+				\lr{$O(\log n)$}
+				
+				\item {\large کاربرد}:
+				مناسب برای داده‌های مرتب‌شده.
+			\end{itemize}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Binary Search}}] 
+# 1. Binary Search
+binary_search <- function(vec, target) {
+	left <- 1
+	right <- length(vec)
+	
+	while (left <= right) {
+		mid <- floor((left + right) / 2)
+		
+		if (vec[mid] == target) {
+			return(mid)
+		} else if (vec[mid] < target) {
+			left <- mid + 1
+		} else {
+			right <- mid - 1
+		}
+	}
+	
+	return(-1)  # Element not found
+}
+
+# Test Binary Search
+binary_search(c(1, 3, 5, 7, 9), 5)
+
+				\end{lstlisting}
+			\end{latin}
+			
+		
+		\section{مرتب‌سازی حبابی (\lr{Bubble Sort})}
+			
+			
+			\begin{itemize}
+				
+				\item {\large هدف}:
+				مرتب کردن یک آرایه به صورت صعودی.
+				
+				\item {\large روش کار}: \par
+				
+				\begin{itemize}
+					
+					\item هر عنصر را با عنصر مجاور مقایسه می‌کند و اگر لازم باشد، جای آن‌ها را عوض می‌کند.
+					
+					\item این کار را تا زمانی ادامه می‌دهد که آرایه کاملاً مرتب شود.
+					
+				\end{itemize}
+				
+				\item {\large پیچیدگی زمانی}:
+				\lr{$O(n^2)$} در بدترین حالت.
+				
+				\item {\large کاربرد}:
+				به دلیل سادگی برای آموزش مرتب‌سازی مناسب است، اما در عمل کند است.
+				
+			\end{itemize}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Bubble Sort}}] 
+# 2. Bubble Sort
+bubble_sort <- function(vec) {
+	n <- length(vec)
+	
+	for (i in 1:(n - 1)) {
+		for (j in 1:(n - i)) {
+			if (vec[j] > vec[j + 1]) {
+				temp <- vec[j]
+				vec[j] <- vec[j + 1]
+				vec[j + 1] <- temp
+			}
+		}
+	}
+	
+	return(vec)
+}
+
+# Test Bubble Sort
+bubble_sort(c(64, 34, 25, 12, 22, 11, 90))
+
+				\end{lstlisting}
+			\end{latin}
+			
+		
+		\section{مرتب‌سازی سریع (\lr{Quick Sort})}
+			
+			
+			\begin{itemize}
+				
+				\item {\large هدف}:
+				مرتب کردن آرایه با استفاده از تقسیم و غلبه (\lr{Divide and Conquer}).
+				
+				\item {\large روش کار}: \par
+				
+				\begin{itemize}
+					
+					\item یک عنصر به عنوان محور (\lr{Pivot}) انتخاب می‌شود.
+					
+					\item عناصر کوچکتر از محور به یک بخش و بزرگترها به بخش دیگر تقسیم می‌شوند.
+					
+					\item هر بخش به صورت بازگشتی مرتب می‌شود.
+					
+				\end{itemize}
+				
+				\item {\large پیچیدگی زمانی} \par
+				
+				\begin{itemize}
+					
+					\item بهترین حالت:
+					\lr{$O(n \log n)$}
+					
+					\item بدترین حالت:
+					\lr{$O(n^2)$} (وقتی آرایه تقریباً مرتب باشد).
+					
+				\end{itemize}
+				
+				\item {\large کاربرد}:
+				یکی از سریع‌ترین روش‌ها برای مرتب‌سازی در عمل.
+				
+			\end{itemize}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Quick Sort}}] 
+# 3. Quick Sort
+quick_sort <- function(vec) {
+	if (length(vec) <= 1) {
+		return(vec)
+	}
+	
+	pivot <- vec[1]
+	less <- vec[vec < pivot]
+	equal <- vec[vec == pivot]
+	greater <- vec[vec > pivot]
+	
+	return(c(quick_sort(less), equal, quick_sort(greater)))
+}
+
+# Test Quick Sort
+quick_sort(c(10, 7, 8, 9, 1, 5))
+
+				\end{lstlisting}
+			\end{latin}
+			
+			
+		\section{الگوریتم دایکسترا (\lr{Dijkstra's Algorithm})}
+			
+			
+			\begin{itemize}
+				
+				\item {\large هدف}:
+				پیدا کردن کوتاه‌ترین مسیر از یک گره مبدأ به تمام گره‌های دیگر در یک گراف وزندار.
+				
+				\item {\large روش کار}: \par
+				
+				\begin{itemize}
+					
+					\item فاصله مبدأ از خودش صفر و فاصله از سایر گره‌ها را بی‌نهایت فرض می‌کند.
+					
+					\item گره‌هایی که هنوز بازدید نشده‌اند، بررسی می‌شوند و فاصله کوتاه‌تر به‌روزرسانی می‌شود.
+					
+					\item این فرآیند تا زمانی ادامه می‌یابد که تمام گره‌ها بازدید شوند.
+					
+				\end{itemize}
+				
+				\item {\large پیچیدگی زمانی}:
+				\lr{$O(V^2)$}
+				) (با ماتریس مجاورت)، یا (
+				\lr{$O((E+V) \log V)$}
+				) با استفاده از صف اولویت.
+				
+				\item {\large کاربرد}:
+				برای مسائل مسیر کوتاه، مانند مسیر‌یابی در نقشه.
+				
+			\end{itemize}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Dijkstra's Algorithm}}] 
+# 4. Dijkstra's Algorithm
+library(igraph)
+
+dijkstra <- function(graph, source) {
+	distances <- rep(Inf, vcount(graph))
+	distances[source] <- 0
+	visited <- rep(FALSE, vcount(graph))
+	
+	while (any(!visited)) {
+		current <- which.min(ifelse(visited, Inf, distances))
+		visited[current] <- TRUE
+		
+		neighbors <- neighbors(graph, current, mode = "out")
+		for (neighbor in neighbors) {
+			edge_weight <- E(graph)[get.edge.ids(graph, c(current, neighbor))]$weight
+			distances[neighbor] <- min(distances[neighbor], distances[current] + edge_weight)
+		}
+	}
+	
+	return(distances)
+}
+
+# Create a test graph
+g <- graph(edges = c(1, 2, 1, 2, 3, 2, 1, 3, 4), n = 3, directed = TRUE)
+E(g)$weight <- c(1, 2, 4)
+
+# Test Dijkstra's Algorithm
+dijkstra(g, 1)
+
+				\end{lstlisting}
+			\end{latin}
+			
+		
+		\section{مرتب‌سازی ادغامی (\lr{Merge Sort})}
+			
+			
+			\begin{itemize}
+				
+				\item {\large هدف}:
+				مرتب کردن آرایه با استفاده از رویکرد تقسیم و غلبه.
+				
+				\item {\large روش کار}: \par
+				
+				\begin{itemize}
+					
+					\item آرایه را به دو نیمه تقسیم می‌کند.
+					
+					\item هر نیمه را به صورت بازگشتی مرتب می‌کند.
+					
+					\item دو نیمه مرتب‌شده را با هم ادغام می‌کند.
+					
+				\end{itemize}
+				
+				\item {\large پیچیدگی زمانی}:
+				\lr{$O(n\log n)$}
+				
+				\item {\large کاربرد}:
+				بسیار کارآمد برای داده‌های بزرگ.
+				
+			\end{itemize}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{Merge Sort}}] 
+# 5. Merge Sort
+merge_sort <- function(vec) {
+	if (length(vec) <= 1) {
+		return(vec)
+	}
+	
+	mid <- floor(length(vec) / 2)
+	left <- merge_sort(vec[1:mid])
+	right <- merge_sort(vec[(mid + 1):length(vec)])
+	
+	merge <- function(left, right) {
+		result <- c()
+		while (length(left) > 0 && length(right) > 0) {
+			if (left[1] <= right[1]) {
+				result <- c(result, left[1])
+				left <- left[-1]
+			} else {
+				result <- c(result, right[1])
+				right <- right[-1]
+			}
+		}
+		return(c(result, left, right))
+	}
+	
+	return(merge(left, right))
+}
+
+# Test Merge Sort
+merge_sort(c(38, 27, 43, 3, 9, 82, 10))
+
+				\end{lstlisting}
+			\end{latin}
+			
+			
+		\section{مسئله کوله‌پشتی (\lr{0/1 Knapsack Problem})}
+			
+			
+			\begin{itemize}
+				
+				\item {\large هدف}:
+				پیدا کردن ترکیبی از آیتم‌ها که بیشترین ارزش را در محدودیت وزن ارائه دهد.
+				
+				\item {\large روش کار}: \par
+				
+				\begin{itemize}
+					
+					\item از رویکرد برنامه‌ریزی پویا (\lr{Dynamic Programming}) استفاده می‌کند.
+					
+					\item یک ماتریس برای ذخیره بهترین مقدار ممکن در هر وزن و آیتم تا لحظه کنونی ایجاد می‌کند.
+					
+				\end{itemize}
+				
+				\item {\large پیچیدگی زمانی}:
+				\lr{$O(n * W)$} 
+				، که 
+				\lr{$n$}
+				تعداد آیتم‌ها و 
+				\lr{$W$}
+				ظرفیت کوله‌پشتی است.
+				
+				\item {\large کاربرد}:
+				در مسائلی مانند بهینه‌سازی سرمایه‌گذاری یا مدیریت منابع.
+				
+			\end{itemize}
+			
+			\begin{latin}
+				\begin{lstlisting}[caption={\lr{0/1 Knapsack Problem}}] 
+# 6. Knapsack Problem (0/1)
+knapsack <- function(weights, values, capacity) {
+	n <- length(weights)
+	dp <- matrix(0, n + 1, capacity + 1)
+	
+	for (i in 1:n) {
+		for (w in 1:capacity) {
+			if (weights[i] <= w) {
+				dp[i + 1, w + 1] <- max(dp[i, w + 1], dp[i, w - weights[i] + 1] + values[i])
+			} else {
+				dp[i + 1, w + 1] <- dp[i, w + 1]
+			}
+		}
+	}
+	
+	return(dp[n + 1, capacity + 1])
+}
+
+# Test Knapsack
+knapsack(c(1, 2, 3), c(6, 10, 12), 5)
+
+				\end{lstlisting}
+			\end{latin}
+			
 	
 	\begin{thebibliography}{9}
 		
